@@ -67,7 +67,7 @@ export const LayoutCard: React.FC<LayoutCardProps> = ({
       </div>
 
       {description && (
-        <p className="text-[12px] text-gray-500 leading-relaxed font-light">
+        <p className="text-[12px] text-gray-500 font-inter leading-relaxed font-light">
           {description}
         </p>
       )}

@@ -11,7 +11,16 @@ import { EquipmentSection } from '../components/configurator/EquipmentSection';
 import { BuildSummaryModal } from '../components/configurator/BuildSummaryModal';
 import { SpecCard, ToggleGroup } from '../components/configurator/SpecCard';
 import { LayoutCard } from '../components/configurator/LayoutCard';
-import { TRAILER_TYPES, SIZE_OPTIONS, STEPS, EQUIPMENT_CATEGORIES,LAYOUT_TECH_ITEMS } from '../utils/constants';
+import { 
+  TRAILER_TYPES, 
+  SIZE_OPTIONS, 
+  STEPS, 
+  EQUIPMENT_CATEGORIES,
+  LAYOUT_TECH_ITEMS,
+  BUMPER_COLORS,
+  DUAL_TONE_COLORS,
+} from '../utils/constants';
+import { ColorGridCard } from '../components/configurator/ColorGridCard';
 
 
 export const ConfiguratorPage: React.FC = () => {
@@ -23,12 +32,18 @@ export const ConfiguratorPage: React.FC = () => {
   const [transmission, setTransmission] = useState('Manual');
   const [wheelbase, setWheelbase] = useState('Short Wheelbase');
   const [activeSubTab, setActiveSubTab] = useState('KITCHEN');
+  const [selectedBumperColor, setSelectedBumperColor] = useState(BUMPER_COLORS[0].id);
+  const [selectedDualToneColor, setSelectedDualToneColor] = useState(DUAL_TONE_COLORS[0].id);
 
   React.useEffect(() => {
     if (state.currentStepId === 'living-layout') {
       setActiveSubTab('KITCHEN');
     } else if (state.currentStepId === 'comfort-technology') {
       setActiveSubTab('CLIMATE CONTROL');
+    } else if (state.currentStepId === 'adventure-utility') {
+      setActiveSubTab('ROOF & EXTERIOR');
+    } else if (state.currentStepId === 'exterior-safety') {
+      setActiveSubTab('PAINT & FINISH');
     }
   }, [state.currentStepId]);
   
@@ -39,6 +54,11 @@ export const ConfiguratorPage: React.FC = () => {
   const climateRef = React.useRef<HTMLDivElement>(null);
   const smartRef = React.useRef<HTMLDivElement>(null);
   const interiorRef = React.useRef<HTMLDivElement>(null);
+  const roofRef = React.useRef<HTMLDivElement>(null);
+  const lightingRef = React.useRef<HTMLDivElement>(null);
+  const towingRef = React.useRef<HTMLDivElement>(null);
+  const paintRef = React.useRef<HTMLDivElement>(null);
+  const safetyRef = React.useRef<HTMLDivElement>(null);
 
   const scrollToSection = (section: string) => {
     setActiveSubTab(section);
@@ -49,6 +69,11 @@ export const ConfiguratorPage: React.FC = () => {
       'CLIMATE CONTROL': climateRef,
       'SMART SYSTEMS': smartRef,
       'INTERIOR COMFORT': interiorRef,
+      'ROOF & EXTERIOR': roofRef,
+      LIGHTING: lightingRef,
+      TOWING: towingRef,
+      'PAINT & FINISH': paintRef,
+      SAFETY: safetyRef,
     };
     refs[section]?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
@@ -56,20 +81,41 @@ export const ConfiguratorPage: React.FC = () => {
   const isSizeSpecsStep = state.currentStepId === 'size-specs';
   const isEquipmentStep = state.currentStepId === 'equipment-side';
   const isTechStep = state.currentStepId === 'comfort-technology';
+  const isAdventureStep = state.currentStepId === 'adventure-utility';
+  const isExteriorStep = state.currentStepId === 'exterior-safety';
   const selectedTrailerType = TRAILER_TYPES.find(
     (type) => type.id === state.selectedTrailerTypeId,
   );
   const selectedSizeOption = SIZE_OPTIONS.find(
     (option) => option.id === state.selectedSizeId,
   );
-  const selectedEquipmentItems = EQUIPMENT_CATEGORIES.flatMap((category) =>
-    category.items
-      .map((item) => ({
+  const selectedEquipmentItems = [
+    ...EQUIPMENT_CATEGORIES.flatMap((category) =>
+      category.items.map((item) => ({
         ...item,
+        category: category.name,
         quantity: equipmentQuantities[item.id] ?? 0,
       }))
-      .filter((item) => item.quantity > 0),
-  );
+    ),
+    ...LAYOUT_TECH_ITEMS.map((item) => {
+      let name = item.name;
+      if (item.id === 'bumper-colour-coding') {
+        const color = BUMPER_COLORS.find(c => c.id === selectedBumperColor);
+        if (color) name = `${item.name} (${color.label})`;
+      } else if (item.id === 'dual-tone') {
+        const color = DUAL_TONE_COLORS.find(c => c.id === selectedDualToneColor);
+        if (color) name = `${item.name} (${color.label})`;
+      }
+      
+      return {
+        ...item,
+        name,
+        image: '',
+        trailerTypes: [],
+        quantity: equipmentQuantities[item.id] ?? 0,
+      };
+    }),
+  ].filter((item) => item.quantity > 0);
 
   const handleQuantityChange = (itemId: string, quantity: number) => {
     setEquipmentQuantities((prev) => ({ ...prev, [itemId]: quantity }));
@@ -412,6 +458,162 @@ export const ConfiguratorPage: React.FC = () => {
                         const current = equipmentQuantities['upholstery-upgrade'] ?? 0;
                         handleQuantityChange('upholstery-upgrade', current > 0 ? 0 : 1);
                       }}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
+            {isAdventureStep && (
+              <>
+                <div className="flex justify-center gap-2 py-4 flex-shrink-0">
+                  {['ROOF & EXTERIOR', 'TOWING', 'LIGHTING'].map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => scrollToSection(tab)}
+                      className={`
+                        px-6 py-2 rounded-full text-[11px] font-bold tracking-widest transition-all
+                        ${activeSubTab === tab 
+                          ? 'bg-[#e05a41] text-white' 
+                          : 'bg-white text-gray-500 hover:bg-gray-50'}
+                      `}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+
+                <div
+                  ref={scrollContainerRef}
+                  className="
+                    flex flex-col gap-6
+                    flex-1 min-h-0 overflow-y-auto
+                    [scrollbar-width:none]
+                    [-ms-overflow-style:none]
+                    [&::-webkit-scrollbar]:hidden
+                    pb-10
+                  "
+                >
+                  {/* Roof & Exterior Section */}
+                  <div ref={roofRef} className="flex flex-col gap-4">
+                    <LayoutCard 
+                      title="REIMO AWNING RAIL"
+                      price={2600}
+                      image="https://www.figma.com/api/mcp/asset/8ccf09ca-6421-4f10-911b-7a32d6677fbc"
+                      isSelected={(equipmentQuantities['reimo-awning-rail'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['reimo-awning-rail'] ?? 0;
+                        handleQuantityChange('reimo-awning-rail', current > 0 ? 0 : 1);
+                      }}
+                    />
+                    <LayoutCard 
+                      title="FIAMMA F45S AWNING"
+                      price={2500}
+                      image="https://www.figma.com/api/mcp/asset/019ad779-f59b-449e-bc43-26466f282ba7"
+                      isSelected={(equipmentQuantities['fiamma-awning'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['fiamma-awning'] ?? 0;
+                        handleQuantityChange('fiamma-awning', current > 0 ? 0 : 1);
+                      }}
+                    />
+                    <LayoutCard 
+                      title="SCENIC POP TOP CANVAS"
+                      price={1400}
+                      image="/assets/CamperVan/image 62.png"
+                      isSelected={(equipmentQuantities['scenic-pop-top'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['scenic-pop-top'] ?? 0;
+                        handleQuantityChange('scenic-pop-top', current > 0 ? 0 : 1);
+                      }}
+                    />
+                  </div>
+
+                  {/* Towing Section */}
+                  <div ref={towingRef} className="flex flex-col gap-4">
+                    <LayoutCard 
+                      title="DETACHABLE TOW BAR"
+                      price={700}
+                      description="Maximize Your Van's Rooftop Storage. This Rugged, No-Drill Aluminum Combo Safely Secures Heavy Gear And Provides Easy, Slip-Resistant Access."
+                      isSelected={(equipmentQuantities['detachable-tow-bar'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['detachable-tow-bar'] ?? 0;
+                        handleQuantityChange('detachable-tow-bar', current > 0 ? 0 : 1);
+                      }}
+                    />
+                  </div>
+
+                  {/* Lighting Section */}
+                  <div ref={lightingRef} className="flex flex-col gap-4">
+                    <LayoutCard 
+                      title="LED FRONT & REAR LIGHTS"
+                      price={2600}
+                      image="https://www.figma.com/api/mcp/asset/43ea7fce-eefb-4748-b6fb-d91718a1bdbc"
+                      isSelected={(equipmentQuantities['led-lights'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['led-lights'] ?? 0;
+                        handleQuantityChange('led-lights', current > 0 ? 0 : 1);
+                      }}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
+
+            {isExteriorStep && (
+              <>
+                <div className="flex justify-center gap-2 py-4 flex-shrink-0">
+                  {['PAINT & FINISH'].map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => scrollToSection(tab)}
+                      className={`
+                        px-6 py-2 rounded-full text-[11px] font-bold tracking-widest transition-all
+                        ${activeSubTab === tab 
+                          ? 'bg-[#e05a41] text-white' 
+                          : 'bg-white text-gray-500 hover:bg-gray-50'}
+                      `}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+
+                <div
+                  ref={scrollContainerRef}
+                  className="
+                    flex flex-col gap-6
+                    flex-1 min-h-0 overflow-y-auto
+                    [scrollbar-width:none]
+                    [-ms-overflow-style:none]
+                    [&::-webkit-scrollbar]:hidden
+                    pb-10
+                  "
+                >
+                  <div ref={paintRef} className="flex flex-col gap-6">
+                    <ColorGridCard
+                      title="BUMPER COLOUR CODING"
+                      price={2500}
+                      options={BUMPER_COLORS}
+                      selectedOptionId={selectedBumperColor}
+                      isSelected={(equipmentQuantities['bumper-colour-coding'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['bumper-colour-coding'] ?? 0;
+                        handleQuantityChange('bumper-colour-coding', current > 0 ? 0 : 1);
+                      }}
+                      onSelectOption={setSelectedBumperColor}
+                    />
+
+                    <ColorGridCard
+                      title="DUAL TONE"
+                      price={2500}
+                      options={DUAL_TONE_COLORS}
+                      selectedOptionId={selectedDualToneColor}
+                      isSelected={(equipmentQuantities['dual-tone'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['dual-tone'] ?? 0;
+                        handleQuantityChange('dual-tone', current > 0 ? 0 : 1);
+                      }}
+                      onSelectOption={setSelectedDualToneColor}
                     />
                   </div>
                 </div>
