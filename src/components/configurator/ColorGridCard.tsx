@@ -3,7 +3,8 @@ import React from 'react';
 interface ColorOption {
   id: string;
   label: string;
-  color: string;
+  color?: string;
+  image?: string;
   isDualTone?: boolean;
   bottomColor?: string;
   isLight?: boolean; // for dark text on light swatches
@@ -65,7 +66,9 @@ export const ColorGridCard: React.FC<ColorGridCardProps> = ({
         {options.map((option) => (
           <button
             key={option.id}
+            type="button"
             onClick={() => onSelectOption(option.id)}
+            aria-label={option.label}
             className={`
               relative rounded-xl overflow-hidden transition-all duration-150
               shadow-sm
@@ -77,15 +80,37 @@ export const ColorGridCard: React.FC<ColorGridCardProps> = ({
             {option.isDualTone ? (
               /* Dual tone: label on top (light bg), color bar below */
               <div className="flex flex-col">
-                <div className="bg-[#f4f4f2] px-2.5 py-2 text-left">
+                <div className="bg-[#f4f4f2] px-2.5 py-2 text-left min-h-[44px]">
                   <span className="text-[11px] font-medium text-[#111827] leading-tight">
                     {option.label}
                   </span>
                 </div>
-                <div
-                  className="h-10 w-full"
-                  style={{ backgroundColor: option.bottomColor }}
+                {option.image ? (
+                  <img
+                    src={option.image}
+                    alt=""
+                    className="h-10 w-full object-cover"
+                    draggable={false}
+                  />
+                ) : (
+                  <div
+                    className="h-10 w-full"
+                    style={{ backgroundColor: option.bottomColor }}
+                  />
+                )}
+              </div>
+            ) : option.image ? (
+              <div className="relative h-[78px] w-full">
+                <img
+                  src={option.image}
+                  alt=""
+                  className="absolute inset-0 h-full w-full object-cover"
+                  draggable={false}
                 />
+                <div className="absolute inset-0 bg-black/20" />
+                <span className="absolute inset-0 flex items-center justify-center px-3 text-center text-[11px] font-medium leading-snug text-white [text-shadow:0_1px_2px_rgba(0,0,0,0.45)]">
+                  {option.label}
+                </span>
               </div>
             ) : (
               /* Solid bumper swatch: full color fill, centered label */
