@@ -34,27 +34,27 @@ export const LAYOUT_TECH_ITEMS = [
 ];
 
 export const BUMPER_COLORS = [
-  { id: 'pearl-black', label: 'Deep Pearl Black', color: '#1a1a1a' },
-  { id: 'cherry-red', label: 'Cherry Red', color: '#9a1a1b' },
-  { id: 'copper-bronze', label: 'Copper Bronze', color: '#7a5a4a' },
-  { id: 'bright-orange', label: 'Bright Orange', color: '#f28c33' },
-  { id: 'bay-leaf-green', label: 'Bay Leaf Green', color: '#3c9c7c' },
-  { id: 'candy-white', label: 'Candy White', color: '#e5e5e5' },
-  { id: 'starlight-blue', label: 'Starlight Blue', color: '#3d4d5d' },
-  { id: 'ravenna-blue', label: 'Ravenna Blue', color: '#0047ab' },
-  { id: 'bright-yellow', label: 'Bright Yellow', color: '#f7ca44' },
-  { id: 'ascot-grey', label: 'Ascot Grey', color: '#9e9c96' },
-  { id: 'bamboo-green', label: 'Bamboo Green', color: '#3c5c5c' },
+  { id: 'pearl-black', label: 'Deep Pearl Black', color: '#1a1a1a', image: '/Black.png' },
+  { id: 'cherry-red', label: 'Cherry Red', color: '#9a1a1b' , image: '/cherryRed.png'},
+  { id: 'copper-bronze', label: 'Copper Bronze', color: '#7a5a4a' , image: '/copperBronze2.png'},
+  { id: 'bright-orange', label: 'Bright Orange', color: '#f28c33' , image: '/BrightOrange.png'},
+  { id: 'bay-leaf-green', label: 'Bay Leaf Green', color: '#3c9c7c', image: '/BayLeafGreen.png' },
+  { id: 'candy-white', label: 'Candy White', color: '#e5e5e5' , image: '/CandyWhite.png'},
+  { id: 'starlight-blue', label: 'Starlight Blue', color: '#3d4d5d', image: '/StarlightBlue.png' },
+  { id: 'ravenna-blue', label: 'Ravenna Blue', color: '#0047ab' , image: '/RavennaBlue.png'},
+  { id: 'bright-yellow', label: 'Bright Yellow', color: '#f7ca44' , image: '/BrightYellow.png'},
+  { id: 'ascot-grey', label: 'Ascot Grey', color: '#9e9c96' , image: '/AscotGrey.png'},
+  { id: 'bamboo-green', label: 'Bamboo Green', color: '#3c5c5c', image: '/BambooGreen.png' },
   { id: 'custom', label: 'Custom', color: '#4a4a4a' },
 ];
 
 export const DUAL_TONE_COLORS = [
-  { id: 'dt-cherry-red', label: 'Cherry Red', color: '#f5f5f0', isDualTone: true, bottomColor: '#9a1a1b' },
-  { id: 'dt-copper-bronze', label: 'Copper Bronze', color: '#f5f5f0', isDualTone: true, bottomColor: '#7a5a4a' },
-  { id: 'dt-military-green', label: 'Military Green', color: '#f5f5f0', isDualTone: true, bottomColor: '#8b9a67' },
-  { id: 'dt-bright-yellow', label: 'Bright Yellow', color: '#f5f5f0', isDualTone: true, bottomColor: '#f7ca44' },
-  { id: 'dt-squirrel-grey', label: 'Squirrel Grey', color: '#f5f5f0', isDualTone: true, bottomColor: '#b5c7cd' },
-  { id: 'dt-indium-grey', label: 'Indium Grey', color: '#f5f5f0', isDualTone: true, bottomColor: '#4d5661' },
+  { id: 'dt-cherry-red', label: 'Cherry Red', color: '#f5f5f0', isDualTone: true, bottomColor: '#9a1a1b', image: '/cherryRed.png' },
+  { id: 'dt-copper-bronze', label: 'Copper Bronze', color: '#f5f5f0', isDualTone: true, bottomColor: '#7a5a4a', image: '/copperBronze2.png' },
+  { id: 'dt-military-green', label: 'Military Green', color: '#f5f5f0', isDualTone: true, bottomColor: '#8b9a67', image: '/MilitaryGreen.png' },
+  { id: 'dt-bright-yellow', label: 'Bright Yellow', color: '#f5f5f0', isDualTone: true, bottomColor: '#f7ca44' , image: '/BrightYellow.png'},
+  { id: 'dt-squirrel-grey', label: 'Squirrel Grey', color: '#f5f5f0', isDualTone: true, bottomColor: '#b5c7cd', image: '/SquirrelGrey.png' },
+  { id: 'dt-indium-grey', label: 'Indium Grey', color: '#f5f5f0', isDualTone: true, bottomColor: '#4d5661', image: '/IndiumGrey.png' },
 ];
 
 export const TRAILER_TYPES: TrailerType[] = [

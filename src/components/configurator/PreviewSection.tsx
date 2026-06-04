@@ -1,10 +1,8 @@
 import React, { useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
-import { useProgress } from '@react-three/drei';
 import { ModelViewer } from './ModelViewer';
 
 export const PreviewSection: React.FC = () => {
-  const [viewMode, setViewMode] = useState<'exterior' | 'interior'>('exterior');
   const [activeMode, setActiveMode] = useState<'exterior' | 'interior'>('exterior');
   const [isFading, setIsFading] = useState<boolean>(false);
   const [isModelLoading, setIsModelLoading] = useState<boolean>(true);
@@ -24,7 +22,6 @@ export const PreviewSection: React.FC = () => {
     if (mode === activeMode) return;
     setIsFading(true);
     setActiveMode(mode);
-    setViewMode(mode);
     setTimeout(() => {
       setIsFading(false);
     }, 900);
@@ -146,7 +143,7 @@ export const PreviewSection: React.FC = () => {
                       </svg>
                     )
                   }
-                ].map((env, index) => {
+                ].map((env) => {
                   const isActive = environment === env.value;
                   return (
                     <button

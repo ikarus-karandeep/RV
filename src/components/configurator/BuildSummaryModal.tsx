@@ -86,14 +86,14 @@ export const BuildSummaryModal: React.FC<BuildSummaryModalProps> = ({
           <div className="bg-gray-50 rounded-3xl p-6 flex items-center gap-6">
             <div className="bg-white rounded-2xl p-2 shadow-sm border border-gray-100 flex-shrink-0">
               <img
-                src={trailerType?.image || "https://www.figma.com/api/mcp/asset/8febc3e6-2d17-4a52-a1c7-2d9675eb7406"}
+                src="/assets/CamperVan/image 64.png"
                 alt="Product"
                 className="w-24 h-auto object-contain"
               />
             </div>
             <div className="min-w-0">
               <p className="text-[14px] font-semibold text-gray-400 uppercase tracking-wider truncate">
-                {trailerType?.title || 'SELECT A TRAILER'}
+                {trailerType?.title || 'SELECT A VAN'}
               </p>
               <p className="text-[24px] font-bold text-[#111827]">
                 {formatPrice(trailerType?.basePrice || 0)}
@@ -193,7 +193,7 @@ export const BuildSummaryModal: React.FC<BuildSummaryModalProps> = ({
                 </div>
 
                 {/* Other Sections */}
-                {['BASE VAN SYSTEMS', 'ADVENTURE & UTILITY', 'COMFORT & TECHNOLOGY', 'EXTERIOR & SAFETY'].map((section) => {
+                {[ 'ADVENTURE & UTILITY', 'COMFORT & TECHNOLOGY', 'EXTERIOR & SAFETY'].map((section) => {
                   const items = itemsByCategory[section] || [];
                   const total = getCategoryTotal(items);
                   const hasItems = items.length > 0;

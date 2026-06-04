@@ -1,12 +1,3 @@
-import React from 'react';
-import { TipBox } from '../common/TipBox';
-
-interface StepInfoProps {
-  title: string;
-  description: string;
-  tip?: string;
-}
-
 export const StepInfo = () => {
   return (
     <div className="flex flex-col gap-[18px] mb-[24px]">
