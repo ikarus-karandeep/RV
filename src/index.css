@@ -4,7 +4,7 @@
 @tailwind utilities;
 
 @layer base {
-  body {
+  body, button, input, textarea, select {
     @apply antialiased text-[#111827];
     font-family: 'Inter', sans-serif;
   }

@@ -8,6 +8,53 @@ export const STEPS: ConfiguratorStep[] = [
   { id: 'adventure-utility', label: 'ADVENTURE & UTILITY' },
   { id: 'exterior-safety', label: 'EXTERIOR & SAFETY' },
 ];
+export const LAYOUT_TECH_ITEMS = [
+  // Living Layout
+  { id: 'microwave', name: 'MICROWAVE', price: 700, category: 'LIVING LAYOUT' },
+  { id: 'ogo-compost-toilet', name: 'OGO ORIGIN COMPOST TOILET', price: 850, category: 'LIVING LAYOUT' },
+  { id: 'laveo-electric-toilet', name: 'LAVEO DRYFLUSH ELECTRIC TOILET', price: 1100, category: 'LIVING LAYOUT' },
+  { id: 'electric-bed-upgrade', name: 'ELECTRIC R&R BED UPGRADE', price: 2500, category: 'LIVING LAYOUT' },
+  { id: 'rear-bench-anchor-points', name: 'REAR BENCH SEAT PET & STORAGE ANCHOR POINTS', price: 9300, category: 'LIVING LAYOUT' },
+  // Comfort & Technology
+  { id: 'diesel-night-heater', name: 'DIESEL NIGHT HEATER', price: 700, category: 'COMFORT & TECHNOLOGY' },
+  { id: 'thermostat-upgrade', name: 'THERMOSTAT COMFORT CONTROLLER UPGRADE', price: 700, category: 'COMFORT & TECHNOLOGY' },
+  { id: 'digital-display', name: 'DIGITAL DISPLAY CONTROLLER SCREEN', price: 250, category: 'COMFORT & TECHNOLOGY' },
+  { id: 'campervan-wifi', name: 'CAMPERVAN WIFI', price: 700, category: 'COMFORT & TECHNOLOGY' },
+  { id: 'upholstery-upgrade', name: 'UPHOLSTERY UPGRADE TO LEATHERETTE', price: 250, category: 'COMFORT & TECHNOLOGY' },
+  // Adventure & Utility
+  { id: 'reimo-awning-rail', name: 'REIMO AWNING RAIL', price: 2600, category: 'ADVENTURE & UTILITY' },
+  { id: 'fiamma-awning', name: 'FIAMMA F45S AWNING', price: 2500, category: 'ADVENTURE & UTILITY' },
+  { id: 'scenic-pop-top', name: 'SCENIC POP TOP CANVAS', price: 1400, category: 'ADVENTURE & UTILITY' },
+  { id: 'detachable-tow-bar', name: 'DETACHABLE TOW BAR', price: 700, category: 'ADVENTURE & UTILITY' },
+  { id: 'led-lights', name: 'LED FRONT & REAR LIGHTS', price: 2600, category: 'ADVENTURE & UTILITY' },
+  // Exterior & Safety
+  { id: 'bumper-colour-coding', name: 'BUMPER COLOUR CODING', price: 2500, category: 'EXTERIOR & SAFETY' },
+  { id: 'dual-tone', name: 'DUAL TONE', price: 2500, category: 'EXTERIOR & SAFETY' },
+];
+
+export const BUMPER_COLORS = [
+  { id: 'pearl-black', label: 'Deep Pearl Black', color: '#1a1a1a' },
+  { id: 'cherry-red', label: 'Cherry Red', color: '#9a1a1b' },
+  { id: 'copper-bronze', label: 'Copper Bronze', color: '#7a5a4a' },
+  { id: 'bright-orange', label: 'Bright Orange', color: '#f28c33' },
+  { id: 'bay-leaf-green', label: 'Bay Leaf Green', color: '#3c9c7c' },
+  { id: 'candy-white', label: 'Candy White', color: '#e5e5e5' },
+  { id: 'starlight-blue', label: 'Starlight Blue', color: '#3d4d5d' },
+  { id: 'ravenna-blue', label: 'Ravenna Blue', color: '#0047ab' },
+  { id: 'bright-yellow', label: 'Bright Yellow', color: '#f7ca44' },
+  { id: 'ascot-grey', label: 'Ascot Grey', color: '#9e9c96' },
+  { id: 'bamboo-green', label: 'Bamboo Green', color: '#3c5c5c' },
+  { id: 'custom', label: 'Custom', color: '#4a4a4a' },
+];
+
+export const DUAL_TONE_COLORS = [
+  { id: 'dt-cherry-red', label: 'Cherry Red', color: '#f5f5f0', isDualTone: true, bottomColor: '#9a1a1b' },
+  { id: 'dt-copper-bronze', label: 'Copper Bronze', color: '#f5f5f0', isDualTone: true, bottomColor: '#7a5a4a' },
+  { id: 'dt-military-green', label: 'Military Green', color: '#f5f5f0', isDualTone: true, bottomColor: '#8b9a67' },
+  { id: 'dt-bright-yellow', label: 'Bright Yellow', color: '#f5f5f0', isDualTone: true, bottomColor: '#f7ca44' },
+  { id: 'dt-squirrel-grey', label: 'Squirrel Grey', color: '#f5f5f0', isDualTone: true, bottomColor: '#b5c7cd' },
+  { id: 'dt-indium-grey', label: 'Indium Grey', color: '#f5f5f0', isDualTone: true, bottomColor: '#4d5661' },
+];
 
 export const TRAILER_TYPES: TrailerType[] = [
   {
