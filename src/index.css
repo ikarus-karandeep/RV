@@ -1,0 +1,27 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply antialiased text-[#111827];
+    font-family: 'Inter', sans-serif;
+  }
+}
+
+:root {
+  --font-inter: 'Inter', sans-serif;
+}
+
+@keyframes summarySlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(48px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
