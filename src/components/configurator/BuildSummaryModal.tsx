@@ -93,7 +93,7 @@ export const BuildSummaryModal: React.FC<BuildSummaryModalProps> = ({
             </div>
             <div className="min-w-0">
               <p className="text-[14px] font-semibold text-gray-400 uppercase tracking-wider truncate">
-                {trailerType?.title || 'SELECT A TRAILER'}
+                {trailerType?.title || 'SELECT A VAN'}
               </p>
               <p className="text-[24px] font-bold text-[#111827]">
                 {formatPrice(trailerType?.basePrice || 0)}
