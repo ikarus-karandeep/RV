@@ -1,13 +1,13 @@
 import React, { useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
+import { useProgress } from '@react-three/drei';
 import { ModelViewer } from './ModelViewer';
-
-
 
 export const PreviewSection: React.FC = () => {
   const [viewMode, setViewMode] = useState<'exterior' | 'interior'>('exterior');
   const [activeMode, setActiveMode] = useState<'exterior' | 'interior'>('exterior');
   const [isFading, setIsFading] = useState<boolean>(false);
+  const [isModelLoading, setIsModelLoading] = useState<boolean>(true);
   const [modelUrls] = useState<string[]>([
     '/Base_Blue.glb',
     '/Base_Optimized5122.glb',
@@ -30,6 +30,13 @@ export const PreviewSection: React.FC = () => {
 
   return (
     <div className="flex-1 min-h-0 h-full relative overflow-hidden">
+      {/* Global Loader Overlay */}
+      {isModelLoading && (
+        <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#f0f0ee]">
+          <img src="/assets/loader.gif" alt="Loading..." className="w-[120px] h-[120px] object-contain" />
+        </div>
+      )}
+
       {/* Smooth Transition Fade Screen Overlay */}
       <div 
         className={`absolute inset-0 z-20 bg-[#f0f0ee] pointer-events-none transition-opacity duration-700 ${
@@ -65,19 +72,12 @@ export const PreviewSection: React.FC = () => {
 
       {/* Top preview area */}
       <div className="w-full h-full cursor-move">
-        <Suspense fallback={
-          <div className="absolute inset-0 flex items-center justify-center text-sm text-gray-500 bg-gray-50/50 backdrop-blur-sm z-0">
-            <div className="flex flex-col items-center gap-3">
-              <div className="w-8 h-8 border-4 border-gray-300 border-t-[#111827] rounded-full animate-spin"></div>
-              <span>Loading 3D Experience...</span>
-            </div>
-          </div>
-        }>
+        <Suspense fallback={null}>
           <Canvas shadows camera={{ position: [8, 8, 8], fov: 35 }}>
             <ambientLight intensity={0.5} />
             <pointLight position={[10, 10, 10]} intensity={1} />
             <directionalLight position={[-10, 10, 5]} intensity={0.5} />
-            <ModelViewer modelUrls={modelUrls} viewMode={activeMode} />
+            <ModelViewer modelUrls={modelUrls} viewMode={activeMode} onLoaded={() => setIsModelLoading(false)} />
           </Canvas>
         </Suspense>
       </div>

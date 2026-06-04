@@ -1,5 +1,5 @@
 import React, { Suspense, useRef, useState, useEffect } from 'react';
-import { useGLTF, OrbitControls, Stage, Center } from '@react-three/drei';
+import { useGLTF, OrbitControls, Stage, Center, Html } from '@react-three/drei';
 import { useThree, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -77,16 +77,28 @@ const CameraController: React.FC<CameraControllerProps> = ({ viewMode, controlsR
 interface ModelViewerProps {
   modelUrls: string[];
   viewMode: 'exterior' | 'interior';
+  onLoaded: () => void;
 }
 
-export const ModelViewer: React.FC<ModelViewerProps> = ({ modelUrls, viewMode }) => {
+export const ModelViewer: React.FC<ModelViewerProps> = ({ modelUrls, viewMode, onLoaded }) => {
   const controlsRef = useRef<any>(null);
   const [isTransitioning, setIsTransitioning] = useState<boolean>(true);
+
+  // Trigger onLoaded after the component renders and completes mounting
+  useEffect(() => {
+    onLoaded();
+  }, [onLoaded]);
 
   if (modelUrls.length === 0) return null;
 
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={
+      <Html center pointerEvents="none">
+        <div className="w-[120px] h-[120px] flex items-center justify-center bg-transparent">
+          <img src="/assets/loader.gif" alt="Loading..." className="w-full h-full object-contain" />
+        </div>
+      </Html>
+    }>
       <Stage environment="city" intensity={0.6} contactShadow={true} shadowBias={-0.0015}>
         <Center>
           {modelUrls.map((url) => (

@@ -27,9 +27,10 @@ export const BottomNav: React.FC<BottomNavProps> = ({
                   className={`
                     px-5 h-full rounded-[8px] whitespace-nowrap uppercase tracking-[0.5px] text-[12px] font-bold transition-all cursor-pointer flex-1 text-center flex items-center justify-center
                     ${isActive
-                      ? 'text-white bg-[#db5a42]'
+                      ? 'text-white'
                       : 'text-[#9ca3af] hover:text-[#374151] bg-transparent'}
                   `}
+                  style={isActive ? { background: 'radial-gradient(circle, #ff7152 0%, #db5a42 100%)' } : undefined}
                 >
                   {step.label}
                 </button>
@@ -39,7 +40,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
         </div>
       </div>
 
-      {/* Right side: Build Summary + Save button (w-[26%] wrapper matching Configurator side panel) */}
+      {/* Right side: Build Summary + Connect With Us button (w-[26%] wrapper matching Configurator side panel) */}
       <div className="w-[26%] px-[20px] flex items-center gap-3 flex-shrink-0 justify-end h-[68px]">
         <button
           type="button"
@@ -50,13 +51,9 @@ export const BottomNav: React.FC<BottomNavProps> = ({
         </button>
         <button
           type="button"
-          className="bg-white border border-[#e5e7eb] rounded-[12px] w-[68px] h-full flex items-center justify-center cursor-pointer hover:bg-gray-50 active:scale-95 transition-all shadow-sm flex-shrink-0"
+          className="bg-white border border-[#e5e7eb] text-[#111827] rounded-[12px] px-6 h-full text-[12px] uppercase tracking-wider font-bold whitespace-nowrap hover:bg-gray-50 active:scale-98 transition-all cursor-pointer flex-1"
         >
-          <img 
-            src="/assets/CamperVan/Container.png" 
-            alt="Save" 
-            className="w-[20px] h-[20px] object-contain"
-          />
+          Connect With Us
         </button>
       </div>
     </div>
