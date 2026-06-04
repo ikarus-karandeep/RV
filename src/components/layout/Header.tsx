@@ -18,9 +18,9 @@ export const Header: React.FC<HeaderProps> = ({ onBack }) => {
       <div className="flex flex-col gap-[5px]">
         <div className="flex items-center">
           <img 
-            src="/assets/CamperVan/powered-by.png" 
+            src="/assets/CamperVan/camper-logo.png" 
             alt="Logo" 
-            className="h-[20px] w-auto mr-[-12px]" 
+            className="h-[50px] w-auto mr-[-12px]" 
           />
           
         </div>

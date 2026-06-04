@@ -1,5 +1,5 @@
 import React, { Suspense, useRef, useState, useEffect } from 'react';
-import { useGLTF, OrbitControls, Stage, Center, Html } from '@react-three/drei';
+import { useGLTF, OrbitControls, Stage, Center, Html, Environment } from '@react-three/drei';
 import { useThree, useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -34,11 +34,11 @@ const CameraController: React.FC<CameraControllerProps> = ({ viewMode, controlsR
     if (!controlsRef.current || !isMoving.current) return;
 
     const targetTarget = viewMode === 'interior' 
-      ? new THREE.Vector3(0, 0.15, -1.0) 
+      ? new THREE.Vector3(0, 0.1, -1.0) 
       : new THREE.Vector3(0, 0, 0);
 
     const targetPosition = viewMode === 'interior' 
-      ? new THREE.Vector3(0, 0.15, 0.5) 
+      ? new THREE.Vector3(0, 0.6, 0.6) 
       : new THREE.Vector3(5.5, 3.8, 5.5);
 
     const targetFov = viewMode === 'interior' ? 75 : 35;
@@ -77,10 +77,11 @@ const CameraController: React.FC<CameraControllerProps> = ({ viewMode, controlsR
 interface ModelViewerProps {
   modelUrls: string[];
   viewMode: 'exterior' | 'interior';
+  environment?: string;
   onLoaded: () => void;
 }
 
-export const ModelViewer: React.FC<ModelViewerProps> = ({ modelUrls, viewMode, onLoaded }) => {
+export const ModelViewer: React.FC<ModelViewerProps> = ({ modelUrls, viewMode, environment = 'city', onLoaded }) => {
   const controlsRef = useRef<any>(null);
   const [isTransitioning, setIsTransitioning] = useState<boolean>(true);
 
@@ -99,13 +100,20 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({ modelUrls, viewMode, o
         </div>
       </Html>
     }>
-      <Stage environment="city" intensity={0.6} contactShadow={true} shadowBias={-0.0015}>
+      <Stage environment={null} intensity={0.6} contactShadow={true} shadowBias={-0.0015} adjustCamera={false}>
         <Center>
           {modelUrls.map((url) => (
             <Model key={url} url={url} />
           ))}
         </Center>
       </Stage>
+      {environment && (
+        environment.endsWith('.hdr') ? (
+          <Environment files={environment} />
+        ) : (
+          <Environment preset={environment as any} />
+        )
+      )}
       <OrbitControls 
         ref={controlsRef} 
         makeDefault 

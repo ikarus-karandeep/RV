@@ -17,15 +17,17 @@ export const PreviewSection: React.FC = () => {
     '/Sofa_Chair_V1.glb',
     '/Tyre_1.glb'
   ]);
+  const [showPhotoMenu, setShowPhotoMenu] = useState<boolean>(false);
+  const [environment, setEnvironment] = useState<string>('city');
 
   const handleModeChange = (mode: 'exterior' | 'interior') => {
     if (mode === activeMode) return;
     setIsFading(true);
+    setActiveMode(mode);
+    setViewMode(mode);
     setTimeout(() => {
-      setActiveMode(mode);
-      setViewMode(mode);
       setIsFading(false);
-    }, 700);
+    }, 900);
   };
 
   return (
@@ -71,13 +73,13 @@ export const PreviewSection: React.FC = () => {
       </div>
 
       {/* Top preview area */}
-      <div className="w-full h-full cursor-move">
+      <div className="w-full h-full">
         <Suspense fallback={null}>
           <Canvas shadows camera={{ position: [8, 8, 8], fov: 35 }}>
             <ambientLight intensity={0.5} />
             <pointLight position={[10, 10, 10]} intensity={1} />
             <directionalLight position={[-10, 10, 5]} intensity={0.5} />
-            <ModelViewer modelUrls={modelUrls} viewMode={activeMode} onLoaded={() => setIsModelLoading(false)} />
+            <ModelViewer modelUrls={modelUrls} viewMode={activeMode} environment={environment} onLoaded={() => setIsModelLoading(false)} />
           </Canvas>
         </Suspense>
       </div>
@@ -89,8 +91,77 @@ export const PreviewSection: React.FC = () => {
             <img src="/assets/CamperVan/eye.png" alt="Eye View" className="w-[20px] h-[20px] object-contain" />
           </div>
 
-          <div className="bg-white rounded-[12px] w-[50px] h-[50px] flex items-center justify-center cursor-pointer hover:bg-gray-50 active:scale-95 shadow-sm border border-gray-100 transition-all">
-            <img src="/assets/CamperVan/photo.png" alt="Photo" className="w-[20px] h-[20px] object-contain" />
+          <div className="relative">
+            <div 
+              onClick={() => setShowPhotoMenu(!showPhotoMenu)}
+              className={`bg-white rounded-[12px] w-[50px] h-[50px] flex items-center justify-center cursor-pointer hover:bg-gray-50 active:scale-95 shadow-sm border border-gray-100 transition-all ${
+                showPhotoMenu ? 'ring-2 ring-[#111827]' : ''
+              }`}
+            >
+              <img src="/assets/CamperVan/photo.png" alt="Photo" className="w-[20px] h-[20px] object-contain" />
+            </div>
+
+            {showPhotoMenu && (
+              <div className="absolute bottom-[62px] left-1/2 -translate-x-1/2 flex gap-[8px] transition-all animate-[summarySlideUp_0.2s_ease-out]">
+                {[
+                  { 
+                    id: 'city', 
+                    value: 'city',
+                    icon: (
+                      <svg className="w-[20px] h-[20px] text-[#4b5563]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="5" />
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    id: 'exr', 
+                    value: '/assets/environment/EXR.hdr',
+                    icon: (
+                      <svg className="w-[20px] h-[20px] text-[#4b5563]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="5" fill="currentColor" fillOpacity="0.15" />
+                        <line x1="12" y1="1" x2="12" y2="3" />
+                        <line x1="12" y1="21" x2="12" y2="23" />
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                        <line x1="1" y1="12" x2="3" y2="12" />
+                        <line x1="21" y1="12" x2="23" y2="12" />
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                      </svg>
+                    )
+                  },
+                  { 
+                    id: 'sunset', 
+                    value: 'sunset',
+                    icon: (
+                      <svg className="w-[20px] h-[20px] text-[#4b5563]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M17 18a5 5 0 0 0-10 0" />
+                        <line x1="12" y1="9" x2="12" y2="11" />
+                        <line x1="4.22" y1="10.22" x2="5.64" y2="11.64" />
+                        <line x1="1" y1="18" x2="3" y2="18" />
+                        <line x1="21" y1="18" x2="23" y2="18" />
+                        <line x1="18.36" y1="11.64" x2="19.78" y2="10.22" />
+                        <line x1="23" y1="22" x2="1" y2="22" />
+                      </svg>
+                    )
+                  }
+                ].map((env, index) => {
+                  const isActive = environment === env.value;
+                  return (
+                    <button
+                      key={env.id}
+                      onClick={() => setEnvironment(env.value)}
+                      className={`bg-white border rounded-full w-[50px] h-[50px] flex items-center justify-center cursor-pointer hover:bg-gray-50 active:scale-95 transition-all shadow-md ${
+                        isActive ? 'border-[#111827] ring-2 ring-[#111827]/10' : 'border-gray-100'
+                      }`}
+                    >
+                      {env.icon}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </div>
 
           <div className="bg-white rounded-[12px] w-[50px] h-[50px] flex items-center justify-center cursor-pointer hover:bg-gray-50 active:scale-95 shadow-sm border border-gray-100 transition-all">
