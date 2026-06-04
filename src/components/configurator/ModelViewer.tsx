@@ -3,7 +3,6 @@ import React, {
   useRef,
   useState,
   useEffect,
-  useLayoutEffect,
 } from "react";
 import {
   useGLTF,
@@ -38,7 +37,7 @@ const Model: React.FC<ModelProps> = ({ url, environment }) => {
 interface CameraControllerProps {
   viewMode: "exterior" | "interior";
   controlsRef: React.RefObject<any>;
-  modelGroupRef: React.RefObject<THREE.Group>;
+  modelGroupRef: React.RefObject<THREE.Group | null>;
   setIsTransitioning: (val: boolean) => void;
 }
 
@@ -53,6 +52,9 @@ const CameraController: React.FC<CameraControllerProps> = ({
   useEffect(() => {
     if (!controlsRef.current) return;
     if (!modelGroupRef.current) return;
+
+    const perspectiveCamera = camera as THREE.PerspectiveCamera;
+    if (!perspectiveCamera.isPerspectiveCamera) return;
 
     const box = new THREE.Box3().setFromObject(
       modelGroupRef.current
@@ -99,22 +101,22 @@ const CameraController: React.FC<CameraControllerProps> = ({
 
     const animateFov = () => {
       if (
-        Math.abs(camera.fov - targetFov) > 0.5
+        Math.abs(perspectiveCamera.fov - targetFov) > 0.5
       ) {
-        camera.fov = THREE.MathUtils.lerp(
-          camera.fov,
+        perspectiveCamera.fov = THREE.MathUtils.lerp(
+          perspectiveCamera.fov,
           targetFov,
           0.1
         );
 
-        camera.updateProjectionMatrix();
+        perspectiveCamera.updateProjectionMatrix();
 
         requestAnimationFrame(
           animateFov
         );
       } else {
-        camera.fov = targetFov;
-        camera.updateProjectionMatrix();
+        perspectiveCamera.fov = targetFov;
+        perspectiveCamera.updateProjectionMatrix();
       }
     };
 
@@ -140,6 +142,7 @@ const CameraController: React.FC<CameraControllerProps> = ({
     camera,
     controlsRef,
     modelGroupRef,
+    setIsTransitioning,
   ]);
 
   return null;
@@ -218,8 +221,7 @@ export const ModelViewer: React.FC<
           stageEnvironment as any
         }
         intensity={0.6}
-        contactShadow={environment?.endsWith('.hdr') ? false : true}
-        shadowBias={-0.0015}
+        shadows={environment?.endsWith('.hdr') ? false : { type: 'contact', bias: -0.0015 }}
       >
         <group ref={modelGroupRef}>
           {modelUrls.map((url) => (
