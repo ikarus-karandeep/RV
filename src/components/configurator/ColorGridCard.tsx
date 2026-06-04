@@ -38,10 +38,10 @@ export const ColorGridCard: React.FC<ColorGridCardProps> = ({
       {/* Header */}
       <div className="flex justify-between items-start mb-6">
         <div>
-          <h3 className="text-[13px] font-bold text-[#111827] tracking-wider uppercase mb-1">
+          <h3 className="text-[16px]  text-[#111827] tracking-wider uppercase mb-1">
             {title}
           </h3>
-          <p className="text-[14px] font-bold text-[#e05a41]">
+          <p className="text-[16px] text-[#e05a41]">
             +${price.toLocaleString()}
           </p>
         </div>
@@ -68,7 +68,7 @@ export const ColorGridCard: React.FC<ColorGridCardProps> = ({
             key={option.id}
             onClick={() => onSelectOption(option.id)}
             className={`
-              relative group rounded-[12px] overflow-hidden transition-all aspect-[4/3]
+              relative group rounded-[12px] overflow-hidden transition-all aspect-[2/1]
               ${selectedOptionId === option.id ? 'ring-2 ring-[#e05a41] ring-offset-2' : 'hover:scale-[1.02]'}
               shadow-sm border border-gray-100
             `}
@@ -77,15 +77,15 @@ export const ColorGridCard: React.FC<ColorGridCardProps> = ({
               <div className="w-full h-full flex flex-col">
                 {/* Top Label Area */}
                 <div 
-                  className="h-1/2 flex items-center justify-center px-2 bg-[#f4f4f2]"
+                  className="h-[35%] flex items-center justify-center px-2 bg-[#f4f4f2]"
                 >
-                  <span className="text-[9px] font-bold text-[#111827] uppercase tracking-tight text-center">
+                  <span className="text-[9px] text-[#111827] uppercase tracking-tight text-center">
                     {option.label}
                   </span>
                 </div>
                 {/* Bottom Color Area */}
                 <div 
-                  className="h-1/2 w-full" 
+                  className="h-[65%] w-full" 
                   style={{ backgroundColor: option.bottomColor }} 
                 />
               </div>
@@ -95,7 +95,7 @@ export const ColorGridCard: React.FC<ColorGridCardProps> = ({
                 style={{ backgroundColor: option.color }}
               >
                 <span className={`
-                  text-[10px] font-bold uppercase tracking-tight text-center
+                  text-[10px]  uppercase tracking-tight text-center
                   ${['#e5e5e5', '#f5f5f0', '#ffffff'].includes(option.color.toLowerCase()) ? 'text-[#111827]' : 'text-white'}
                 `}>
                   {option.label}
