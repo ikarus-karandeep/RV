@@ -10,7 +10,8 @@ import { EquipmentSection } from '../components/configurator/EquipmentSection';
 import { BuildSummaryModal } from '../components/configurator/BuildSummaryModal';
 import { SpecCard, ToggleGroup } from '../components/configurator/SpecCard';
 import { LayoutCard } from '../components/configurator/LayoutCard';
-import { TRAILER_TYPES, SIZE_OPTIONS, STEPS, EQUIPMENT_CATEGORIES } from '../utils/constants';
+import { TRAILER_TYPES, SIZE_OPTIONS, STEPS, EQUIPMENT_CATEGORIES,LAYOUT_TECH_ITEMS } from '../utils/constants';
+
 
 export const ConfiguratorPage: React.FC = () => {
   const { state, setStep, selectTrailerType, selectSize, nextStep } = useConfigurator();
@@ -430,6 +431,11 @@ export const ConfiguratorPage: React.FC = () => {
         trailerType={selectedTrailerType}
         sizeOption={selectedSizeOption}
         equipmentItems={selectedEquipmentItems}
+        vanSpecs={{
+          model: vanModel,
+          transmission: transmission,
+          wheelbase: wheelbase,
+        }}
         onClose={() => setSummaryOpen(false)}
       />
     </div>

@@ -8,6 +8,20 @@ export const STEPS: ConfiguratorStep[] = [
   { id: 'adventure-utility', label: 'ADVENTURE & UTILITY' },
   { id: 'exterior-safety', label: 'EXTERIOR & SAFETY' },
 ];
+export const LAYOUT_TECH_ITEMS = [
+  // Living Layout
+  { id: 'microwave', name: 'MICROWAVE', price: 700, category: 'LIVING LAYOUT' },
+  { id: 'ogo-compost-toilet', name: 'OGO ORIGIN COMPOST TOILET', price: 850, category: 'LIVING LAYOUT' },
+  { id: 'laveo-electric-toilet', name: 'LAVEO DRYFLUSH ELECTRIC TOILET', price: 1100, category: 'LIVING LAYOUT' },
+  { id: 'electric-bed-upgrade', name: 'ELECTRIC R&R BED UPGRADE', price: 2500, category: 'LIVING LAYOUT' },
+  { id: 'rear-bench-anchor-points', name: 'REAR BENCH SEAT PET & STORAGE ANCHOR POINTS', price: 9300, category: 'LIVING LAYOUT' },
+  // Comfort & Technology
+  { id: 'diesel-night-heater', name: 'DIESEL NIGHT HEATER', price: 700, category: 'COMFORT & TECHNOLOGY' },
+  { id: 'thermostat-upgrade', name: 'THERMOSTAT COMFORT CONTROLLER UPGRADE', price: 700, category: 'COMFORT & TECHNOLOGY' },
+  { id: 'digital-display', name: 'DIGITAL DISPLAY CONTROLLER SCREEN', price: 250, category: 'COMFORT & TECHNOLOGY' },
+  { id: 'campervan-wifi', name: 'CAMPERVAN WIFI', price: 700, category: 'COMFORT & TECHNOLOGY' },
+  { id: 'upholstery-upgrade', name: 'UPHOLSTERY UPGRADE TO LEATHERETTE', price: 250, category: 'COMFORT & TECHNOLOGY' },
+];
 
 export const TRAILER_TYPES: TrailerType[] = [
   {
