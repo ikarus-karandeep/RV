@@ -509,7 +509,7 @@ export const ConfiguratorPage: React.FC = () => {
                     <LayoutCard 
                       title="REIMO AWNING RAIL"
                       price={2600}
-                      image="https://www.figma.com/api/mcp/asset/8ccf09ca-6421-4f10-911b-7a32d6677fbc"
+                      image="/Reimo.png"
                       isSelected={(equipmentQuantities['reimo-awning-rail'] ?? 0) > 0}
                       onToggle={() => {
                         const current = equipmentQuantities['reimo-awning-rail'] ?? 0;
@@ -519,7 +519,7 @@ export const ConfiguratorPage: React.FC = () => {
                     <LayoutCard 
                       title="FIAMMA F45S AWNING"
                       price={2500}
-                      image="https://www.figma.com/api/mcp/asset/019ad779-f59b-449e-bc43-26466f282ba7"
+                      image="/Fiamma.png"
                       isSelected={(equipmentQuantities['fiamma-awning'] ?? 0) > 0}
                       onToggle={() => {
                         const current = equipmentQuantities['fiamma-awning'] ?? 0;
@@ -529,7 +529,7 @@ export const ConfiguratorPage: React.FC = () => {
                     <LayoutCard 
                       title="SCENIC POP TOP CANVAS"
                       price={1400}
-                      image="/assets/CamperVan/image 62.png"
+                      image="/Scenic.png"
                       isSelected={(equipmentQuantities['scenic-pop-top'] ?? 0) > 0}
                       onToggle={() => {
                         const current = equipmentQuantities['scenic-pop-top'] ?? 0;
@@ -557,7 +557,7 @@ export const ConfiguratorPage: React.FC = () => {
                     <LayoutCard 
                       title="LED FRONT & REAR LIGHTS"
                       price={2600}
-                      image="https://www.figma.com/api/mcp/asset/43ea7fce-eefb-4748-b6fb-d91718a1bdbc"
+                      image="/LED.png"
                       isSelected={(equipmentQuantities['led-lights'] ?? 0) > 0}
                       onToggle={() => {
                         const current = equipmentQuantities['led-lights'] ?? 0;
