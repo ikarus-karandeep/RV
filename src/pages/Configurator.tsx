@@ -117,6 +117,13 @@ export const ConfiguratorPage: React.FC = () => {
     }),
   ].filter((item) => item.quantity > 0);
 
+  const equipmentTotal = selectedEquipmentItems.reduce(
+    (total, item) => total + (item.price || 0) * (item.quantity || 0),
+    0,
+  );
+  const totalPrice =
+    (selectedTrailerType?.basePrice || 0) + (selectedSizeOption?.price || 0) + equipmentTotal;
+
   const handleQuantityChange = (itemId: string, quantity: number) => {
     setEquipmentQuantities((prev) => ({ ...prev, [itemId]: quantity }));
   };
@@ -637,6 +644,7 @@ export const ConfiguratorPage: React.FC = () => {
         currentStepId={state.currentStepId}
         onStepChange={setStep}
         onBuildSummary={() => setSummaryOpen(true)}
+        totalPrice={totalPrice}
       />
 
       <BuildSummaryModal

@@ -5,12 +5,14 @@ interface BottomNavProps {
   currentStepId: string;
   onStepChange: (stepId: string) => void;
   onBuildSummary: () => void;
+  totalPrice?: number;
 }
 
 export const BottomNav: React.FC<BottomNavProps> = ({
   currentStepId,
   onStepChange,
   onBuildSummary,
+  totalPrice = 0,
 }) => {
   return (
     <div className="w-full pb-4 flex flex-col md:flex-row items-stretch md:items-center justify-between flex-shrink-0 bg-transparent font-inter select-none">
@@ -45,9 +47,23 @@ export const BottomNav: React.FC<BottomNavProps> = ({
         <button
           type="button"
           onClick={onBuildSummary}
-          className="bg-[#111827] text-white rounded-[12px] px-8 h-full text-[12px] uppercase tracking-wider font-bold whitespace-nowrap hover:bg-[#1f2937] active:scale-98 transition-all cursor-pointer flex-1"
+          className="bg-[#18181b] text-white rounded-[12px] px-6 h-full text-[12px] uppercase tracking-wider font-bold whitespace-nowrap hover:bg-zinc-800 active:scale-98 transition-all cursor-pointer flex-1 flex items-center justify-center gap-4"
         >
-          Build Summary
+          <span>Summary &middot; ${totalPrice.toLocaleString()}</span>
+          <svg
+            className="w-4 h-4 text-white"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.5"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18"
+            />
+          </svg>
         </button>
         <button
           type="button"
