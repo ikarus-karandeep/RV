@@ -60,6 +60,61 @@ export const ConfiguratorPage: React.FC = () => {
   const paintRef = React.useRef<HTMLDivElement>(null);
   const safetyRef = React.useRef<HTMLDivElement>(null);
 
+  React.useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (!container) return;
+
+    let isScrolling = false;
+    let timeoutId: NodeJS.Timeout;
+
+    const handleScroll = () => {
+      let sections: { label: string; ref: React.RefObject<HTMLDivElement> }[] = [];
+      if (state.currentStepId === 'living-layout') {
+        sections = [
+          { label: 'KITCHEN', ref: kitchenRef },
+          { label: 'WATER & SHOWER', ref: waterRef },
+          { label: 'SLEEPING', ref: sleepingRef },
+        ];
+      } else if (state.currentStepId === 'comfort-technology') {
+        sections = [
+          { label: 'CLIMATE CONTROL', ref: climateRef },
+          { label: 'SMART SYSTEMS', ref: smartRef },
+          { label: 'INTERIOR COMFORT', ref: interiorRef },
+        ];
+      } else if (state.currentStepId === 'adventure-utility') {
+        sections = [
+          { label: 'ROOF & EXTERIOR', ref: roofRef },
+          { label: 'TOWING', ref: towingRef },
+          { label: 'LIGHTING', ref: lightingRef },
+        ];
+      }
+
+      if (sections.length === 0) return;
+
+      const containerRect = container.getBoundingClientRect();
+      let activeSection = '';
+
+      // Find the last section that has scrolled past the top threshold
+      for (const section of sections) {
+        if (section.ref.current) {
+          const rect = section.ref.current.getBoundingClientRect();
+          if (rect.top - containerRect.top <= 80) {
+            activeSection = section.label;
+          }
+        }
+      }
+
+      if (activeSection) {
+        setActiveSubTab(activeSection);
+      }
+    };
+
+    container.addEventListener('scroll', handleScroll);
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+    };
+  }, [state.currentStepId]);
+
   const scrollToSection = (section: string) => {
     setActiveSubTab(section);
     const refs: Record<string, React.RefObject<HTMLDivElement>> = {
