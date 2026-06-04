@@ -1,8 +1,8 @@
 import type { TrailerType, SizeOption, ConfiguratorStep } from '../types';
 
 export const STEPS: ConfiguratorStep[] = [
-  { id: 'exterior-safety', label: 'EXTERIOR & SAFETY' },
   { id: 'van-specs', label: 'VAN SPECS' },
+  { id: 'exterior-safety', label: 'EXTERIOR & SAFETY' },
   { id: 'living-layout', label: 'LIVING LAYOUT' },
   // { id: 'base-van-systems', label: 'BASE VAN SYSTEMS' },
   { id: 'comfort-technology', label: 'COMFORT & TECHNOLOGY' },
