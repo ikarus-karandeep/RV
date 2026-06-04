@@ -136,6 +136,14 @@ export const ConfiguratorPage: React.FC = () => {
                       <span className="text-[32px] text-[#111827]">8.5 ft</span>
                     </div>
                   </SpecCard>
+                  <SpecCard 
+                    title="Length" 
+                    footer={{ label: "Interior Cargo Bed Length", value: "15.7FT" }}
+                  >
+                    <div className="flex flex-col items-center">
+                      <span className="text-[32px] text-[#111827]">24 ft</span>
+                    </div>
+                  </SpecCard>
                 </div>
               </>
             )}
