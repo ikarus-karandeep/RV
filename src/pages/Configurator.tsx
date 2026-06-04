@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useConfigurator } from '../hooks/useConfigurator';
 import { Header } from '../components/layout/Header';
 import { BottomNav } from '../components/layout/BottomNav';
@@ -13,6 +14,7 @@ import { LayoutCard } from '../components/configurator/LayoutCard';
 import { TRAILER_TYPES, SIZE_OPTIONS, STEPS, EQUIPMENT_CATEGORIES } from '../utils/constants';
 
 export const ConfiguratorPage: React.FC = () => {
+  const navigate = useNavigate();
   const { state, setStep, selectTrailerType, selectSize, nextStep } = useConfigurator();
   const [equipmentQuantities, setEquipmentQuantities] = useState<Record<string, number>>({});
   const [summaryOpen, setSummaryOpen] = useState(false);
@@ -60,7 +62,7 @@ export const ConfiguratorPage: React.FC = () => {
 
   return (
     <div className="relative h-screen bg-[#f0f0ee] flex flex-col overflow-hidden">
-      <Header onBack={() => setStep(STEPS[0].id)} />
+      <Header onBack={() => navigate('/begin')} />
 
       {/* Main content area */}
       <main className="flex-1 min-h-0 overflow-hidden">
@@ -69,7 +71,7 @@ export const ConfiguratorPage: React.FC = () => {
           <PreviewSection />
 
           {/* Right panel */}
-          <div className="flex flex-col flex-shrink-0 min-h-0 px-[20px] w-[26%]">
+          <div className="flex flex-col flex-shrink-0 min-h-0 pt-[20px] px-[20px] w-[26%]">
             {state.currentStepId === 'van-specs' && (
               <>
                 <StepInfo
@@ -228,9 +230,9 @@ export const ConfiguratorPage: React.FC = () => {
             {state.currentStepId === 'size-specs' && (
               <>
                 <StepInfo
-                  title="Trailer Size & Specifications"
-                  description="Choose the trailer size to match your needs and equipments you need to keep."
-                  tip="Start from the maximum size and reduce it later to perfectly fit your equipments"
+                  // title="Trailer Size & Specifications"
+                  // description="Choose the trailer size to match your needs and equipments you need to keep."
+                  // tip="Start from the maximum size and reduce it later to perfectly fit your equipments"
                 />
                 <div
                   className="
@@ -262,8 +264,8 @@ export const ConfiguratorPage: React.FC = () => {
             {isEquipmentStep && (
               <>
                 <StepInfo
-                  title="Equipment"
-                  description="Choose equipment that match your business needs"
+                  // title="Equipment"
+                  // description="Choose equipment that match your business needs"
                 />
                 <div
                   className="
