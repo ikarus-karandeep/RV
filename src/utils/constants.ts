@@ -1,12 +1,12 @@
 import type { TrailerType, SizeOption, ConfiguratorStep } from '../types';
 
 export const STEPS: ConfiguratorStep[] = [
-  { id: 'trailer-type', label: 'VAN SPECS' },
-  { id: 'size-specs', label: 'LIVING LAYOUT' },
-  { id: 'equipment-side', label: 'BASE VAN SYSTEMS' },
-  { id: 'serving-side', label: 'ADVENTURE & UTILITY' },
-  { id: 'add-ons', label: 'COMFORT & TECHNOLOGY' },
-  { id: 'customization', label: 'EXTERIOR & SAFETY' },
+  { id: 'van-specs', label: 'VAN SPECS' },
+  { id: 'living-layout', label: 'LIVING LAYOUT' },
+  // { id: 'base-van-systems', label: 'BASE VAN SYSTEMS' },
+  { id: 'adventure-utility', label: 'ADVENTURE & UTILITY' },
+  { id: 'comfort-technology', label: 'COMFORT & TECHNOLOGY' },
+  { id: 'exterior-safety', label: 'EXTERIOR & SAFETY' },
 ];
 
 export const TRAILER_TYPES: TrailerType[] = [
