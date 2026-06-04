@@ -86,7 +86,7 @@ export const BuildSummaryModal: React.FC<BuildSummaryModalProps> = ({
           <div className="bg-gray-50 rounded-3xl p-6 flex items-center gap-6">
             <div className="bg-white rounded-2xl p-2 shadow-sm border border-gray-100 flex-shrink-0">
               <img
-                src={"/assets/CamperVan/image 64.png" || "https://www.figma.com/api/mcp/asset/8febc3e6-2d17-4a52-a1c7-2d9675eb7406"}
+                src="/assets/CamperVan/image 64.png"
                 alt="Product"
                 className="w-24 h-auto object-contain"
               />
