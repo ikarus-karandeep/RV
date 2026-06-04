@@ -20,11 +20,22 @@ export const ConfiguratorPage: React.FC = () => {
   const [transmission, setTransmission] = useState('Manual');
   const [wheelbase, setWheelbase] = useState('Short Wheelbase');
   const [activeSubTab, setActiveSubTab] = useState('KITCHEN');
+
+  React.useEffect(() => {
+    if (state.currentStepId === 'living-layout') {
+      setActiveSubTab('KITCHEN');
+    } else if (state.currentStepId === 'comfort-technology') {
+      setActiveSubTab('CLIMATE CONTROL');
+    }
+  }, [state.currentStepId]);
   
   const scrollContainerRef = React.useRef<HTMLDivElement>(null);
   const kitchenRef = React.useRef<HTMLDivElement>(null);
   const waterRef = React.useRef<HTMLDivElement>(null);
   const sleepingRef = React.useRef<HTMLDivElement>(null);
+  const climateRef = React.useRef<HTMLDivElement>(null);
+  const smartRef = React.useRef<HTMLDivElement>(null);
+  const interiorRef = React.useRef<HTMLDivElement>(null);
 
   const scrollToSection = (section: string) => {
     setActiveSubTab(section);
@@ -32,12 +43,16 @@ export const ConfiguratorPage: React.FC = () => {
       KITCHEN: kitchenRef,
       'WATER & SHOWER': waterRef,
       SLEEPING: sleepingRef,
+      'CLIMATE CONTROL': climateRef,
+      'SMART SYSTEMS': smartRef,
+      'INTERIOR COMFORT': interiorRef,
     };
     refs[section]?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
   const isSizeSpecsStep = state.currentStepId === 'size-specs';
   const isEquipmentStep = state.currentStepId === 'equipment-side';
+  const isTechStep = state.currentStepId === 'comfort-technology';
   const selectedTrailerType = TRAILER_TYPES.find(
     (type) => type.id === state.selectedTrailerTypeId,
   );
@@ -83,7 +98,6 @@ export const ConfiguratorPage: React.FC = () => {
                     [scrollbar-width:none]
                     [-ms-overflow-style:none]
                     [&::-webkit-scrollbar]:hidden
-                    pb-20
                   "
                 >
                   <SpecCard 
@@ -175,7 +189,6 @@ export const ConfiguratorPage: React.FC = () => {
                     [scrollbar-width:none]
                     [-ms-overflow-style:none]
                     [&::-webkit-scrollbar]:hidden
-                    pb-32
                   "
                 >
                   {/* Kitchen Section */}
@@ -184,9 +197,11 @@ export const ConfiguratorPage: React.FC = () => {
                       title="MICROWAVE"
                       price={700}
                       image="/MicroWave.png"
-                      quantity={1}
-                      onIncrease={() => {}}
-                      onDecrease={() => {}}
+                      isSelected={(equipmentQuantities['microwave'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['microwave'] ?? 0;
+                        handleQuantityChange('microwave', current > 0 ? 0 : 1);
+                      }}
                     />
                   </div>
 
@@ -196,17 +211,21 @@ export const ConfiguratorPage: React.FC = () => {
                       title="OGO ORIGIN COMPOST TOILET"
                       price={850}
                       image="https://www.figma.com/api/mcp/asset/bca76fbd-971b-4ba0-b4da-da2cff16eec0"
-                      quantity={0}
-                      onIncrease={() => {}}
-                      onDecrease={() => {}}
+                      isSelected={(equipmentQuantities['ogo-compost-toilet'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['ogo-compost-toilet'] ?? 0;
+                        handleQuantityChange('ogo-compost-toilet', current > 0 ? 0 : 1);
+                      }}
                     />
                     <LayoutCard 
                       title="LAVEO DRYFLUSH ELECTRIC TOILET"
                       price={1100}
                       image="https://www.figma.com/api/mcp/asset/bca76fbd-971b-4ba0-b4da-da2cff16eec0"
-                      quantity={0}
-                      onIncrease={() => {}}
-                      onDecrease={() => {}}
+                      isSelected={(equipmentQuantities['laveo-electric-toilet'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['laveo-electric-toilet'] ?? 0;
+                        handleQuantityChange('laveo-electric-toilet', current > 0 ? 0 : 1);
+                      }}
                     />
                   </div>
 
@@ -216,17 +235,21 @@ export const ConfiguratorPage: React.FC = () => {
                       title="ELECTRIC R&R BED UPGRADE"
                       price={2500}
                       image="https://www.figma.com/api/mcp/asset/43ea7fce-eefb-4748-b6fb-d91718a1bdbc"
-                      quantity={1}
-                      onIncrease={() => {}}
-                      onDecrease={() => {}}
+                      isSelected={(equipmentQuantities['electric-bed-upgrade'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['electric-bed-upgrade'] ?? 0;
+                        handleQuantityChange('electric-bed-upgrade', current > 0 ? 0 : 1);
+                      }}
                     />
                     <LayoutCard 
                       title="REAR BENCH SEAT PET & STORAGE ANCHOR POINTS"
                       price={9300}
                       image="https://www.figma.com/api/mcp/asset/bca76fbd-971b-4ba0-b4da-da2cff16eec0"
-                      quantity={0}
-                      onIncrease={() => {}}
-                      onDecrease={() => {}}
+                      isSelected={(equipmentQuantities['rear-bench-anchor-points'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['rear-bench-anchor-points'] ?? 0;
+                        handleQuantityChange('rear-bench-anchor-points', current > 0 ? 0 : 1);
+                      }}
                     />
                   </div>
                 </div>
@@ -291,6 +314,103 @@ export const ConfiguratorPage: React.FC = () => {
                       selectedTrailerTypeId={state.selectedTrailerTypeId ?? ''}
                     />
                   ))}
+                </div>
+              </>
+            )}
+
+            {isTechStep && (
+              <>
+                <div className="flex justify-center gap-2 py-4 flex-shrink-0">
+                  {['CLIMATE CONTROL', 'SMART SYSTEMS', 'INTERIOR COMFORT'].map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => scrollToSection(tab)}
+                      className={`
+                        px-6 py-2 rounded-full text-[11px] font-bold tracking-widest transition-all
+                        ${activeSubTab === tab 
+                          ? 'bg-[#e05a41] text-white' 
+                          : 'bg-white text-gray-500 hover:bg-gray-50'}
+                      `}
+                    >
+                      {tab}
+                    </button>
+                  ))}
+                </div>
+
+                <div
+                  ref={scrollContainerRef}
+                  className="
+                    flex flex-col gap-6
+                    flex-1 min-h-0 overflow-y-auto
+                    [scrollbar-width:none]
+                    [-ms-overflow-style:none]
+                    [&::-webkit-scrollbar]:hidden
+                    pb-10
+                  "
+                >
+                  {/* Climate Control Section */}
+                  <div ref={climateRef} className="flex flex-col gap-4">
+                    <LayoutCard 
+                      title="DIESEL NIGHT HEATER"
+                      price={700}
+                      description="Maximize Your Van's Rooftop Storage. This Rugged, No-Drill Aluminum Combo Safely Secures Heavy Gear And Provides Easy, Slip-Resistant Access."
+                      isSelected={(equipmentQuantities['diesel-night-heater'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['diesel-night-heater'] ?? 0;
+                        handleQuantityChange('diesel-night-heater', current > 0 ? 0 : 1);
+                      }}
+                    />
+                    <LayoutCard 
+                      title="THERMOSTAT COMFORT CONTROLLER UPGRADE"
+                      price={700}
+                      description="Maximize Your Van's Rooftop Storage. This Rugged, No-Drill Aluminum Combo Safely Secures Heavy Gear And Provides Easy, Slip-Resistant Access."
+                      isSelected={(equipmentQuantities['thermostat-upgrade'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['thermostat-upgrade'] ?? 0;
+                        handleQuantityChange('thermostat-upgrade', current > 0 ? 0 : 1);
+                      }}
+                    />
+                  </div>
+
+                  {/* Smart Systems Section */}
+                  <div ref={smartRef} className="flex flex-col gap-4">
+                    <LayoutCard 
+                      title="DIGITAL DISPLAY CONTROLLER SCREEN"
+                      price={250}
+                      description="Maximize Your Van's Rooftop Storage. This Rugged, No-Drill Aluminum Combo Safely Secures Heavy Gear And Provides Easy, Slip-Resistant Access."
+                      image="https://www.figma.com/api/mcp/asset/43ea7fce-eefb-4748-b6fb-d91718a1bdbc"
+                      isSelected={(equipmentQuantities['digital-display'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['digital-display'] ?? 0;
+                        handleQuantityChange('digital-display', current > 0 ? 0 : 1);
+                      }}
+                    />
+                    <LayoutCard 
+                      title="CAMPERVAN WIFI"
+                      price={700}
+                      description="Maximize Your Van's Rooftop Storage. This Rugged, No-Drill Aluminum Combo Safely Secures Heavy Gear And Provides Easy, Slip-Resistant Access."
+                      isSelected={(equipmentQuantities['campervan-wifi'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['campervan-wifi'] ?? 0;
+                        handleQuantityChange('campervan-wifi', current > 0 ? 0 : 1);
+                      }}
+                    />
+                  </div>
+
+                  {/* Interior Comfort Section */}
+                  <div ref={interiorRef} className="flex flex-col gap-4">
+                    <LayoutCard 
+                      title="UPHOLSTERY UPGRADE TO LEATHERETTE"
+                      price={250}
+                      description="Maximize Your Van's Rooftop Storage. This Rugged, No-Drill Aluminum Combo Safely Secures Heavy Gear And Provides Easy, Slip-Resistant Access."
+                      image="https://www.figma.com/api/mcp/asset/bca76fbd-971b-4ba0-b4da-da2cff16eec0"
+                      isSelected={(equipmentQuantities['upholstery-upgrade'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['upholstery-upgrade'] ?? 0;
+                        handleQuantityChange('upholstery-upgrade', current > 0 ? 0 : 1);
+                      }}
+                    />
+                  </div>
                 </div>
               </>
             )}

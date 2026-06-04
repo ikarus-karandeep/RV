@@ -4,8 +4,8 @@ export const STEPS: ConfiguratorStep[] = [
   { id: 'van-specs', label: 'VAN SPECS' },
   { id: 'living-layout', label: 'LIVING LAYOUT' },
   // { id: 'base-van-systems', label: 'BASE VAN SYSTEMS' },
-  { id: 'adventure-utility', label: 'ADVENTURE & UTILITY' },
   { id: 'comfort-technology', label: 'COMFORT & TECHNOLOGY' },
+  { id: 'adventure-utility', label: 'ADVENTURE & UTILITY' },
   { id: 'exterior-safety', label: 'EXTERIOR & SAFETY' },
 ];
 
