@@ -13,32 +13,34 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   onBuildSummary,
 }) => {
   return (
-    <div className="w-full max-w-[97.5dvw] mx-auto pb-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4 flex-shrink-0 bg-transparent font-inter select-none">
-      {/* Left side: White floating steps bar */}
-      <div className="w-[72%] 2xl: w-[77.5%] bg-white rounded-[12px] border border-[#e5e7eb] shadow-sm p-1.5 flex items-center h-[68px] overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden flex-shrink-0">
-        <div className="flex items-center w-full justify-between gap-1 h-full">
-          {STEPS.map((step) => {
-            const isActive = step.id === currentStepId;
-            return (
-              <button
-                key={step.id}
-                onClick={() => onStepChange(step.id)}
-                className={`
-                  px-5 h-full rounded-[8px] whitespace-nowrap uppercase tracking-[0.5px] text-[12px] font-bold transition-all cursor-pointer flex-1 text-center flex items-center justify-center
-                  ${isActive
-                    ? 'text-white bg-[#db5a42]'
-                    : 'text-[#9ca3af] hover:text-[#374151] bg-transparent'}
-                `}
-              >
-                {step.label}
-              </button>
-            );
-          })}
+    <div className="w-full pb-4 flex flex-col md:flex-row items-stretch md:items-center justify-between flex-shrink-0 bg-transparent font-inter select-none">
+      {/* Left side: White floating steps bar (w-[74%] wrapper matching Preview area) */}
+      <div className="w-[74%] pl-[20px] flex-shrink-0">
+        <div className="w-full bg-white rounded-[12px] border border-[#e5e7eb] shadow-sm p-1.5 flex items-center h-[68px] overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+          <div className="flex items-center w-full justify-between gap-1 h-full">
+            {STEPS.map((step) => {
+              const isActive = step.id === currentStepId;
+              return (
+                <button
+                  key={step.id}
+                  onClick={() => onStepChange(step.id)}
+                  className={`
+                    px-5 h-full rounded-[8px] whitespace-nowrap uppercase tracking-[0.5px] text-[12px] font-bold transition-all cursor-pointer flex-1 text-center flex items-center justify-center
+                    ${isActive
+                      ? 'text-white bg-[#db5a42]'
+                      : 'text-[#9ca3af] hover:text-[#374151] bg-transparent'}
+                  `}
+                >
+                  {step.label}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
 
-      {/* Right side: Build Summary + Save button with Container.png icon */}
-      <div className="w-[27.5%] 2xl:w-[22.5%] flex items-center gap-3 flex-shrink-0 justify-end h-[68px]">
+      {/* Right side: Build Summary + Save button (w-[26%] wrapper matching Configurator side panel) */}
+      <div className="w-[26%] px-[20px] flex items-center gap-3 flex-shrink-0 justify-end h-[68px]">
         <button
           type="button"
           onClick={onBuildSummary}

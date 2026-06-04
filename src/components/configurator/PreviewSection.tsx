@@ -2,26 +2,10 @@ import React, { useState, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import { ModelViewer } from './ModelViewer';
 
-const EyeIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-    <circle cx="12" cy="12" r="3" />
-  </svg>
-);
 
-const MountainIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <polygon points="3 17 9 3 15 13 19 9 21 17 3 17" />
-  </svg>
-);
-
-const RulerIcon = () => (
-  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#555" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M21.3 8.7l-1.4 1.4-2.1-2.1-1.4 1.4 2.1 2.1-1.4 1.4-2.1-2.1-1.4 1.4 2.1 2.1-1.4 1.4-2.1-2.1-1.4 1.4 2.1 2.1-1.4 1.4L2.7 8.7a1 1 0 0 1 0-1.4l4.6-4.6a1 1 0 0 1 1.4 0l12.6 12.6" />
-  </svg>
-);
 
 export const PreviewSection: React.FC = () => {
+  const [viewMode, setViewMode] = useState<'exterior' | 'interior'>('exterior');
   const [modelUrls] = useState<string[]>([
     '/Base_Blue.glb',
     '/Base_Optimized5122.glb',
@@ -34,6 +18,32 @@ export const PreviewSection: React.FC = () => {
 
   return (
     <div className="flex-1 min-h-0 h-full relative overflow-hidden">
+      {/* Top Center Exterior/Interior Toggle Button */}
+      <div className="absolute top-[22.5px] left-1/2 -translate-x-1/2 z-10 flex-shrink-0">
+        <div className="bg-white rounded-[12px] p-1 flex items-center shadow-md border border-gray-100 h-[48px]">
+          <button
+            onClick={() => setViewMode('exterior')}
+            className={`px-5 h-full rounded-[8px] text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center ${
+              viewMode === 'exterior'
+                ? 'bg-[#1e1e1e] text-white shadow-sm'
+                : 'text-gray-500 hover:text-gray-800 bg-transparent'
+            }`}
+          >
+            Exterior
+          </button>
+          <button
+            onClick={() => setViewMode('interior')}
+            className={`px-5 h-full rounded-[8px] text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center ${
+              viewMode === 'interior'
+                ? 'bg-[#1e1e1e] text-white shadow-sm'
+                : 'text-gray-500 hover:text-gray-800 bg-transparent'
+            }`}
+          >
+            Interior
+          </button>
+        </div>
+      </div>
+
       {/* Top preview area */}
       <div className="w-full h-full cursor-move">
         <Suspense fallback={
@@ -55,21 +65,21 @@ export const PreviewSection: React.FC = () => {
 
       {/* Floating control area over canvas */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
-        <div className="flex gap-[16px] items-center">
-          <div className="bg-white/80 backdrop-blur-md rounded-[8px] size-[50px] flex items-center justify-center cursor-pointer hover:bg-white shadow-lg border border-[#e5e7eb]/50 transition-all">
-            <EyeIcon />
+        <div className="flex gap-[12px] items-center">
+          <div className="bg-white rounded-[12px] w-[50px] h-[50px] flex items-center justify-center cursor-pointer hover:bg-gray-50 active:scale-95 shadow-sm border border-gray-100 transition-all">
+            <img src="/assets/CamperVan/eye.png" alt="Eye View" className="w-[20px] h-[20px] object-contain" />
           </div>
 
-          <div className="bg-white/80 backdrop-blur-md rounded-[8px] size-[50px] flex items-center justify-center cursor-pointer hover:bg-white shadow-lg border border-[#e5e7eb]/50 transition-all">
-            <MountainIcon />
+          <div className="bg-white rounded-[12px] w-[50px] h-[50px] flex items-center justify-center cursor-pointer hover:bg-gray-50 active:scale-95 shadow-sm border border-gray-100 transition-all">
+            <img src="/assets/CamperVan/photo.png" alt="Photo" className="w-[20px] h-[20px] object-contain" />
           </div>
 
-          <div className="bg-white/80 backdrop-blur-md rounded-[8px] size-[50px] flex items-center justify-center cursor-pointer hover:bg-white shadow-lg border border-[#e5e7eb]/50 transition-all">
-            <RulerIcon />
+          <div className="bg-white rounded-[12px] w-[50px] h-[50px] flex items-center justify-center cursor-pointer hover:bg-gray-50 active:scale-95 shadow-sm border border-gray-100 transition-all">
+            <img src="/assets/CamperVan/measurement.png" alt="Measurements" className="w-[20px] h-[20px] object-contain" />
           </div>
 
-          <div className="bg-white/80 backdrop-blur-md h-[44px] px-[20px] rounded-[22px] flex items-center shadow-lg border border-[#e5e7eb]/50 cursor-pointer hover:bg-white transition-all">
-            <span className="text-[11.5px] font-semibold uppercase tracking-[0.08em] text-[#111827]">
+          <div className="bg-white px-[24px] h-[50px] rounded-[12px] flex items-center shadow-sm border border-gray-100 cursor-pointer hover:bg-gray-50 active:scale-95 transition-all">
+            <span className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#111827]">
               VIEW IN YOUR DRIVEWAY
             </span>
           </div>
