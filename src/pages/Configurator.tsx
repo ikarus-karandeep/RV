@@ -257,23 +257,33 @@ export const ConfiguratorPage: React.FC = () => {
                   {/* Water & Shower Section */}
                   <div ref={waterRef} className="flex flex-col gap-4">
                     <LayoutCard 
-                      title="OGO ORIGIN COMPOST TOILET"
+                      title="Hot Water System"
                       price={850}
-                      image="https://www.figma.com/api/mcp/asset/bca76fbd-971b-4ba0-b4da-da2cff16eec0"
-                      isSelected={(equipmentQuantities['ogo-compost-toilet'] ?? 0) > 0}
+                      image="/HotWater.png"
+                      isSelected={(equipmentQuantities['Hot Water System'] ?? 0) > 0}
                       onToggle={() => {
-                        const current = equipmentQuantities['ogo-compost-toilet'] ?? 0;
-                        handleQuantityChange('ogo-compost-toilet', current > 0 ? 0 : 1);
+                        const current = equipmentQuantities['Hot Water System'] ?? 0;
+                        handleQuantityChange('Hot Water System', current > 0 ? 0 : 1);
                       }}
                     />
                     <LayoutCard 
-                      title="LAVEO DRYFLUSH ELECTRIC TOILET"
+                      title="Underslung Water Tank"
                       price={1100}
-                      image="https://www.figma.com/api/mcp/asset/bca76fbd-971b-4ba0-b4da-da2cff16eec0"
-                      isSelected={(equipmentQuantities['laveo-electric-toilet'] ?? 0) > 0}
+                      image="/Underslung.png"
+                      isSelected={(equipmentQuantities['Underslung Water Tank'] ?? 0) > 0}
                       onToggle={() => {
-                        const current = equipmentQuantities['laveo-electric-toilet'] ?? 0;
-                        handleQuantityChange('laveo-electric-toilet', current > 0 ? 0 : 1);
+                        const current = equipmentQuantities['Underslung Water Tank'] ?? 0;
+                        handleQuantityChange('Underslung Water Tank', current > 0 ? 0 : 1);
+                      }}
+                    />
+                    <LayoutCard 
+                      title="Rear Shower Point"
+                      price={1100}
+                      image="/Rear_Shower.png"
+                      isSelected={(equipmentQuantities['Rear Shower Point'] ?? 0) > 0}
+                      onToggle={() => {
+                        const current = equipmentQuantities['Rear Shower Point'] ?? 0;
+                        handleQuantityChange('Rear Shower Point', current > 0 ? 0 : 1);
                       }}
                     />
                   </div>
@@ -283,7 +293,7 @@ export const ConfiguratorPage: React.FC = () => {
                     <LayoutCard 
                       title="ELECTRIC R&R BED UPGRADE"
                       price={2500}
-                      image="https://www.figma.com/api/mcp/asset/43ea7fce-eefb-4748-b6fb-d91718a1bdbc"
+                      image="/ElectricBed.png"
                       isSelected={(equipmentQuantities['electric-bed-upgrade'] ?? 0) > 0}
                       onToggle={() => {
                         const current = equipmentQuantities['electric-bed-upgrade'] ?? 0;
@@ -293,7 +303,7 @@ export const ConfiguratorPage: React.FC = () => {
                     <LayoutCard 
                       title="REAR BENCH SEAT PET & STORAGE ANCHOR POINTS"
                       price={9300}
-                      image="https://www.figma.com/api/mcp/asset/bca76fbd-971b-4ba0-b4da-da2cff16eec0"
+                      image="/RearBench.png"
                       isSelected={(equipmentQuantities['rear-bench-anchor-points'] ?? 0) > 0}
                       onToggle={() => {
                         const current = equipmentQuantities['rear-bench-anchor-points'] ?? 0;
@@ -427,7 +437,7 @@ export const ConfiguratorPage: React.FC = () => {
                       title="DIGITAL DISPLAY CONTROLLER SCREEN"
                       price={250}
                       description="Maximize Your Van's Rooftop Storage. This Rugged, No-Drill Aluminum Combo Safely Secures Heavy Gear And Provides Easy, Slip-Resistant Access."
-                      image="https://www.figma.com/api/mcp/asset/43ea7fce-eefb-4748-b6fb-d91718a1bdbc"
+                      image="/DigitalDisplay.png"
                       isSelected={(equipmentQuantities['digital-display'] ?? 0) > 0}
                       onToggle={() => {
                         const current = equipmentQuantities['digital-display'] ?? 0;
@@ -452,7 +462,7 @@ export const ConfiguratorPage: React.FC = () => {
                       title="UPHOLSTERY UPGRADE TO LEATHERETTE"
                       price={250}
                       description="Maximize Your Van's Rooftop Storage. This Rugged, No-Drill Aluminum Combo Safely Secures Heavy Gear And Provides Easy, Slip-Resistant Access."
-                      image="https://www.figma.com/api/mcp/asset/bca76fbd-971b-4ba0-b4da-da2cff16eec0"
+                      image="/Upholstery.png"
                       isSelected={(equipmentQuantities['upholstery-upgrade'] ?? 0) > 0}
                       onToggle={() => {
                         const current = equipmentQuantities['upholstery-upgrade'] ?? 0;

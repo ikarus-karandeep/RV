@@ -11,8 +11,9 @@ export const STEPS: ConfiguratorStep[] = [
 export const LAYOUT_TECH_ITEMS = [
   // Living Layout
   { id: 'microwave', name: 'MICROWAVE', price: 700, category: 'LIVING LAYOUT' },
-  { id: 'ogo-compost-toilet', name: 'OGO ORIGIN COMPOST TOILET', price: 850, category: 'LIVING LAYOUT' },
-  { id: 'laveo-electric-toilet', name: 'LAVEO DRYFLUSH ELECTRIC TOILET', price: 1100, category: 'LIVING LAYOUT' },
+  { id: 'Hot Water System', name: 'Hot Water System', price: 850, category: 'LIVING LAYOUT' },
+  { id: 'Underslung Water Tank', name: 'Underslung Water Tank', price: 1100, category: 'LIVING LAYOUT' },
+  { id: 'Rear Shower Point', name: 'Rear Shower Point', price: 1100, category: 'LIVING LAYOUT' },
   { id: 'electric-bed-upgrade', name: 'ELECTRIC R&R BED UPGRADE', price: 2500, category: 'LIVING LAYOUT' },
   { id: 'rear-bench-anchor-points', name: 'REAR BENCH SEAT PET & STORAGE ANCHOR POINTS', price: 9300, category: 'LIVING LAYOUT' },
   // Comfort & Technology
