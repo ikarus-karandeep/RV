@@ -42,8 +42,8 @@ export const ConfiguratorPage: React.FC = () => {
       setActiveSubTab('CLIMATE CONTROL');
     } else if (state.currentStepId === 'adventure-utility') {
       setActiveSubTab('ROOF & EXTERIOR');
-    } else if (state.currentStepId === 'exterior-safety') {
-      setActiveSubTab('PAINT & FINISH');
+    // } else if (state.currentStepId === 'exterior-safety') {
+    //   setActiveSubTab('PAINT & FINISH');
     }
   }, [state.currentStepId]);
   
@@ -72,7 +72,7 @@ export const ConfiguratorPage: React.FC = () => {
       'ROOF & EXTERIOR': roofRef,
       LIGHTING: lightingRef,
       TOWING: towingRef,
-      'PAINT & FINISH': paintRef,
+      // 'PAINT & FINISH': paintRef,
       SAFETY: safetyRef,
     };
     refs[section]?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -562,20 +562,19 @@ export const ConfiguratorPage: React.FC = () => {
             {isExteriorStep && (
               <>
                 <div className="flex justify-center gap-2 py-4 flex-shrink-0">
-                  {['PAINT & FINISH'].map((tab) => (
+                  {/* {['PAINT & FINISH'].map((tab) => ( */}
                     <button
-                      key={tab}
-                      onClick={() => scrollToSection(tab)}
+                  
+                      // onClick={() => scrollToSection(tab)}
                       className={`
                         px-6 py-2 rounded-full text-[11px] font-bold tracking-widest transition-all
-                        ${activeSubTab === tab 
+                        
                           ? 'bg-[#e05a41] text-white' 
-                          : 'bg-white text-gray-500 hover:bg-gray-50'}
                       `}
                     >
-                      {tab}
+                      {/* {tab} */}
                     </button>
-                  ))}
+                  {/* ))} */}
                 </div>
 
                 <div
