@@ -86,13 +86,13 @@ export const ConfiguratorPage: React.FC = () => {
           <PreviewSection />
 
           {/* Right panel */}
-          <div className="flex flex-col flex-shrink-0 min-h-0 pt-[20px] px-[20px] w-[26%]">
+          <div className="flex flex-col flex-shrink-0 min-h-0 pt-[22px] px-[20px] w-[26%]">
             {state.currentStepId === 'van-specs' && (
               <>
-                <StepInfo
+                {/* <StepInfo
                   // title="Van Specifications"
                   // description="Customize the base vehicle specifications for your mobile business."
-                />
+                /> */}
                 <div
                   className="
                     flex flex-col gap-[16px]

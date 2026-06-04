@@ -6,6 +6,8 @@ import { ModelViewer } from './ModelViewer';
 
 export const PreviewSection: React.FC = () => {
   const [viewMode, setViewMode] = useState<'exterior' | 'interior'>('exterior');
+  const [activeMode, setActiveMode] = useState<'exterior' | 'interior'>('exterior');
+  const [isFading, setIsFading] = useState<boolean>(false);
   const [modelUrls] = useState<string[]>([
     '/Base_Blue.glb',
     '/Base_Optimized5122.glb',
@@ -16,15 +18,32 @@ export const PreviewSection: React.FC = () => {
     '/Tyre_1.glb'
   ]);
 
+  const handleModeChange = (mode: 'exterior' | 'interior') => {
+    if (mode === activeMode) return;
+    setIsFading(true);
+    setTimeout(() => {
+      setActiveMode(mode);
+      setViewMode(mode);
+      setIsFading(false);
+    }, 700);
+  };
+
   return (
     <div className="flex-1 min-h-0 h-full relative overflow-hidden">
+      {/* Smooth Transition Fade Screen Overlay */}
+      <div 
+        className={`absolute inset-0 z-20 bg-[#f0f0ee] pointer-events-none transition-opacity duration-700 ${
+          isFading ? 'opacity-100' : 'opacity-0'
+        }`}
+      />
+
       {/* Top Center Exterior/Interior Toggle Button */}
       <div className="absolute top-[22.5px] left-1/2 -translate-x-1/2 z-10 flex-shrink-0">
         <div className="bg-white rounded-[12px] p-1 flex items-center shadow-md border border-gray-100 h-[48px]">
           <button
-            onClick={() => setViewMode('exterior')}
+            onClick={() => handleModeChange('exterior')}
             className={`px-5 h-full rounded-[8px] text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center ${
-              viewMode === 'exterior'
+              activeMode === 'exterior'
                 ? 'bg-[#1e1e1e] text-white shadow-sm'
                 : 'text-gray-500 hover:text-gray-800 bg-transparent'
             }`}
@@ -32,9 +51,9 @@ export const PreviewSection: React.FC = () => {
             Exterior
           </button>
           <button
-            onClick={() => setViewMode('interior')}
+            onClick={() => handleModeChange('interior')}
             className={`px-5 h-full rounded-[8px] text-[10px] font-bold uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center ${
-              viewMode === 'interior'
+              activeMode === 'interior'
                 ? 'bg-[#1e1e1e] text-white shadow-sm'
                 : 'text-gray-500 hover:text-gray-800 bg-transparent'
             }`}
@@ -58,7 +77,7 @@ export const PreviewSection: React.FC = () => {
             <ambientLight intensity={0.5} />
             <pointLight position={[10, 10, 10]} intensity={1} />
             <directionalLight position={[-10, 10, 5]} intensity={0.5} />
-            <ModelViewer modelUrls={modelUrls} />
+            <ModelViewer modelUrls={modelUrls} viewMode={activeMode} />
           </Canvas>
         </Suspense>
       </div>
