@@ -32,6 +32,7 @@ const CameraController: React.FC<CameraControllerProps> = ({ viewMode, controlsR
 
   useFrame(() => {
     if (!controlsRef.current || !isMoving.current) return;
+    if (!(camera instanceof THREE.PerspectiveCamera)) return;
 
     const targetTarget = viewMode === 'interior' 
       ? new THREE.Vector3(0, 0.1, -1.0) 
@@ -100,7 +101,7 @@ export const ModelViewer: React.FC<ModelViewerProps> = ({ modelUrls, viewMode, e
         </div>
       </Html>
     }>
-      <Stage environment={null} intensity={0.6} contactShadow={true} shadowBias={-0.0015} adjustCamera={false}>
+      <Stage environment={null} intensity={0.6} shadows={{ type: 'contact', bias: -0.0015 }} adjustCamera={false}>
         <Center>
           {modelUrls.map((url) => (
             <Model key={url} url={url} />

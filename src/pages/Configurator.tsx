@@ -5,7 +5,6 @@ import { Header } from '../components/layout/Header';
 import { BottomNav } from '../components/layout/BottomNav';
 import { PreviewSection } from '../components/configurator/PreviewSection';
 import { StepInfo } from '../components/configurator/StepInfo';
-import { TrailerTypeCard } from '../components/configurator/TrailerTypeCard';
 import { SizeOptionCard } from '../components/configurator/SizeOptionCard';
 import { EquipmentSection } from '../components/configurator/EquipmentSection';
 import { BuildSummaryModal } from '../components/configurator/BuildSummaryModal';
@@ -14,7 +13,6 @@ import { LayoutCard } from '../components/configurator/LayoutCard';
 import { 
   TRAILER_TYPES, 
   SIZE_OPTIONS, 
-  STEPS, 
   EQUIPMENT_CATEGORIES,
   LAYOUT_TECH_ITEMS,
   BUMPER_COLORS,
@@ -25,7 +23,7 @@ import { ColorGridCard } from '../components/configurator/ColorGridCard';
 
 export const ConfiguratorPage: React.FC = () => {
   const navigate = useNavigate();
-  const { state, setStep, selectTrailerType, selectSize, nextStep } = useConfigurator();
+  const { state, setStep, selectSize } = useConfigurator();
   const [equipmentQuantities, setEquipmentQuantities] = useState<Record<string, number>>({});
   const [summaryOpen, setSummaryOpen] = useState(false);
   const [vanModel, setVanModel] = useState('T5.1 (2010-15)');
@@ -64,11 +62,8 @@ export const ConfiguratorPage: React.FC = () => {
     const container = scrollContainerRef.current;
     if (!container) return;
 
-    let isScrolling = false;
-    let timeoutId: NodeJS.Timeout;
-
     const handleScroll = () => {
-      let sections: { label: string; ref: React.RefObject<HTMLDivElement> }[] = [];
+      let sections: { label: string; ref: React.RefObject<HTMLDivElement | null> }[] = [];
       if (state.currentStepId === 'living-layout') {
         sections = [
           { label: 'KITCHEN', ref: kitchenRef },
@@ -117,7 +112,7 @@ export const ConfiguratorPage: React.FC = () => {
 
   const scrollToSection = (section: string) => {
     setActiveSubTab(section);
-    const refs: Record<string, React.RefObject<HTMLDivElement>> = {
+    const refs: Record<string, React.RefObject<HTMLDivElement | null>> = {
       KITCHEN: kitchenRef,
       'WATER & SHOWER': waterRef,
       SLEEPING: sleepingRef,
@@ -133,7 +128,6 @@ export const ConfiguratorPage: React.FC = () => {
     refs[section]?.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const isSizeSpecsStep = state.currentStepId === 'size-specs';
   const isEquipmentStep = state.currentStepId === 'equipment-side';
   const isTechStep = state.currentStepId === 'comfort-technology';
   const isAdventureStep = state.currentStepId === 'adventure-utility';

@@ -193,7 +193,7 @@ export const BuildSummaryModal: React.FC<BuildSummaryModalProps> = ({
                 </div>
 
                 {/* Other Sections */}
-                {['BASE VAN SYSTEMS', 'ADVENTURE & UTILITY', 'COMFORT & TECHNOLOGY', 'EXTERIOR & SAFETY'].map((section) => {
+                {[ 'ADVENTURE & UTILITY', 'COMFORT & TECHNOLOGY', 'EXTERIOR & SAFETY'].map((section) => {
                   const items = itemsByCategory[section] || [];
                   const total = getCategoryTotal(items);
                   const hasItems = items.length > 0;
