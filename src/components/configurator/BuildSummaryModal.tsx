@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type { SizeOption, TrailerType } from '../../types';
 import type { EquipmentItem } from '../../utils/constants';
 
@@ -14,15 +14,6 @@ interface BuildSummaryModalProps {
   onClose: () => void;
 }
 
-type SummaryTab = 'type' | 'size' | 'equipments' | 'additional';
-
-const SUMMARY_TABS: Array<{ id: SummaryTab; label: string }> = [
-  { id: 'type', label: 'TYPE' },
-  { id: 'size', label: 'SIZE' },
-  { id: 'equipments', label: 'EQUIPMENTS' },
-  { id: 'additional', label: 'ADDITIONAL' },
-];
-
 const formatPrice = (price: number) => `$${price.toLocaleString()}`;
 
 export const BuildSummaryModal: React.FC<BuildSummaryModalProps> = ({
@@ -32,8 +23,6 @@ export const BuildSummaryModal: React.FC<BuildSummaryModalProps> = ({
   equipmentItems,
   onClose,
 }) => {
-  const [activeTab, setActiveTab] = useState<SummaryTab>('type');
-
   if (!open) {
     return null;
   }
@@ -46,166 +35,132 @@ export const BuildSummaryModal: React.FC<BuildSummaryModalProps> = ({
     (trailerType?.basePrice ?? 0) + (sizeOption?.price ?? 0) + equipmentTotal;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end justify-center bg-black/35 px-[16px] pt-[24px]">
-      <button
-        type="button"
-        aria-label="Close build summary"
-        className="absolute inset-0 cursor-default"
+    <div className="fixed inset-0 z-[100] flex justify-end bg-black/20">
+      {/* Backdrop overlay for closing */}
+      <div 
+        className="absolute inset-0 cursor-default" 
         onClick={onClose}
       />
 
-      <section className="relative w-full max-w-[1180px] max-h-[92vh] overflow-hidden rounded-t-[16px] bg-[#f5f5f3] shadow-2xl animate-[summarySlideUp_260ms_ease-out]">
-        <div className="flex items-center justify-between border-b border-[#e5e7eb] bg-white px-[24px] py-[14px]">
-          <h2 className="text-[24px] font-bold text-[#111827]">Build Summary</h2>
+      <section className="relative w-[30%] h-full bg-white shadow-2xl flex flex-col animate-slide-in-right">
+        {/* Header */}
+        <div className="flex items-center justify-between px-8 py-8">
+          <h2 className="text-[32px] font-bold text-[#111827]">Your Build</h2>
           <button
             type="button"
-            aria-label="Close"
             onClick={onClose}
-            className="size-[42px] rounded-[8px] border border-[#e5e7eb] bg-white text-[24px] leading-none text-[#111827] hover:bg-gray-50"
+            className="size-[48px] flex items-center justify-center rounded-xl bg-gray-50 text-gray-500 hover:text-gray-900 transition-colors"
           >
-            ×
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
           </button>
         </div>
 
-        <div className="max-h-[calc(92vh-71px)] overflow-y-auto p-[24px]">
-          <div className="rounded-[12px] bg-white p-[18px]">
-            <div className="flex items-center gap-[28px] rounded-[10px] bg-[#f5f5f3] px-[28px] py-[16px]">
-              {trailerType && (
-                <img
-                  src={trailerType.image}
-                  alt={trailerType.title}
-                  className="h-[86px] w-[150px] object-contain"
-                />
-              )}
-              <div>
-                <p className="text-[24px] font-medium uppercase tracking-[0.02em] text-[#5b616b]">
-                  Concession Trailer
-                </p>
-                <p className="text-[32px] font-bold text-[#111827]">
-                  {formatPrice(subtotal)}
-                </p>
-              </div>
+        <div className="flex-1 overflow-y-auto px-8 space-y-6">
+          {/* Main Product Card */}
+          <div className="bg-gray-50 rounded-3xl p-6 flex items-center gap-6">
+            <div className="bg-white rounded-2xl p-2 shadow-sm border border-gray-100 flex-shrink-0">
+              <img
+                src={trailerType?.image || "https://www.figma.com/api/mcp/asset/8febc3e6-2d17-4a52-a1c7-2d9675eb7406"}
+                alt="Product"
+                className="w-24 h-auto object-contain"
+              />
             </div>
-
-            <div className="mt-[32px] grid grid-cols-4 gap-[16px]">
-              {SUMMARY_TABS.map((tab, index) => {
-                const selected = activeTab === tab.id;
-                return (
-                  <button
-                    key={tab.id}
-                    type="button"
-                    onClick={() => setActiveTab(tab.id)}
-                    className={`
-                      h-[52px] border-b-[3px] text-[15px] font-medium uppercase tracking-[0.02em] transition-colors
-                      ${
-                        selected
-                          ? 'border-[#111827] text-[#111827]'
-                          : 'border-transparent text-[#4b5563] hover:text-[#111827]'
-                      }
-                    `}
-                  >
-                    {index + 1}. {tab.label}
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="mt-[28px] rounded-[12px] border border-[#e5e7eb] bg-white p-[24px]">
-              {activeTab === 'type' && (
-                trailerType ? (
-                  <div className="flex items-center gap-[28px]">
-                    <img
-                      src={trailerType.image}
-                      alt={trailerType.title}
-                      className="h-[120px] w-[180px] rounded-[8px] bg-[#f0f4ff] object-contain"
-                    />
-                    <div className="min-w-0 flex-1">
-                      <p className="text-[24px] font-bold text-[#111827]">
-                        {trailerType.title}
-                      </p>
-                      <p className="mt-[8px] text-[16px] leading-[1.5] text-[#6b7280]">
-                        {trailerType.description}
-                      </p>
-                      <p className="mt-[14px] text-[20px] font-semibold text-[#111827]">
-                        {formatPrice(trailerType.basePrice)}
-                      </p>
-                    </div>
-                  </div>
-                ) : (
-                  <p className="text-[16px] text-[#6b7280]">No trailer type selected</p>
-                )
-              )}
-
-              {activeTab === 'size' && (
-                sizeOption ? (
-                  <div className="flex items-center justify-between gap-[24px]">
-                    <div>
-                      <p className="text-[24px] font-bold text-[#111827]">
-                        {sizeOption.size}
-                      </p>
-                      <p className="mt-[8px] text-[16px] leading-[1.5] text-[#6b7280]">
-                        {sizeOption.description}
-                      </p>
-                    </div>
-                    <p className="text-[22px] font-bold text-[#111827]">
-                      {formatPrice(sizeOption.price)}
-                    </p>
-                  </div>
-                ) : (
-                  <p className="text-[16px] text-[#6b7280]">No size selected</p>
-                )
-              )}
-
-              {activeTab === 'equipments' && (
-                equipmentItems.length > 0 ? (
-                  <div className="flex flex-col gap-[18px]">
-                    {equipmentItems.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex min-h-[112px] items-center gap-[24px] rounded-[12px] border border-[#e5e7eb] px-[28px] py-[18px]"
-                      >
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="h-[80px] w-[110px] object-contain"
-                        />
-                        <p className="min-w-0 flex-1 text-[22px] font-medium uppercase text-[#111827]">
-                          {item.name}
-                        </p>
-                        <span className="rounded-full border border-[#111827] px-[22px] py-[10px] text-[14px] font-medium uppercase">
-                          Qty {item.quantity}
-                        </span>
-                        <span className="rounded-full bg-[#fde4dd] px-[28px] py-[11px] text-[14px] font-medium uppercase text-[#111827]">
-                          {item.trailerTypes.includes('cook-serve') ? 'Cook' : 'Store'}
-                        </span>
-                        <p className="w-[150px] text-right text-[22px] font-medium text-[#111827]">
-                          +{formatPrice(item.price * item.quantity)}
-                        </p>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-[16px] text-[#6b7280]">No equipment selected</p>
-                )
-              )}
-
-              {activeTab === 'additional' && (
-                <p className="text-[16px] text-[#6b7280]">
-                  No additional selections yet
-                </p>
-              )}
+            <div className="min-w-0">
+              <p className="text-[14px] font-semibold text-gray-400 uppercase tracking-wider truncate">
+                {trailerType?.title || 'SELECT A TRAILER'}
+              </p>
+              <p className="text-[24px] font-bold text-[#111827]">
+                {formatPrice(trailerType?.basePrice || 0)}
+              </p>
             </div>
           </div>
 
-          <div className="mt-[18px] rounded-[12px] bg-white px-[28px] py-[22px]">
-            <div className="flex items-center justify-between text-[18px] text-[#4b5563]">
-              <span>Subtotal</span>
-              <span>{formatPrice(subtotal)}</span>
+          {/* Tabs */}
+          <div className="flex border-b border-gray-100 pb-4">
+            <button className="flex-1 text-[12px] font-bold text-gray-400 py-2 border-b-2 border-transparent">1. PACKAGE</button>
+            <button className="flex-1 text-[12px] font-bold text-[#111827] py-2 border-b-2 border-[#111827]">2. CONFIGURATIONS</button>
+          </div>
+
+          {/* Collapsible Sections */}
+          <div className="space-y-4">
+            <div className="space-y-4">
+              <div className="flex items-center justify-between group cursor-pointer">
+                <div className="flex items-center gap-2">
+                  <span className="text-[15px] font-bold text-[#111827]">LIVING LAYOUT</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400">
+                    <polyline points="18 15 12 9 6 15" />
+                  </svg>
+                </div>
+                <span className="text-[15px] font-bold text-[#111827]">
+                   {sizeOption ? `+${formatPrice(sizeOption.price)}` : '$0'}
+                </span>
+              </div>
+              
+              <div className="pl-0 space-y-3 text-[14px]">
+                <div className="flex justify-between">
+                  <span className="text-gray-500">Selected Size</span>
+                  <span className="text-gray-900 font-medium">{sizeOption?.size || 'None'}</span>
+                </div>
+                {equipmentItems.length > 0 && (
+                  <div className="space-y-3 pt-2">
+                    <p className="text-[12px] font-bold text-gray-400 uppercase tracking-wider">Equipments</p>
+                    {equipmentItems.map(item => (
+                      <div key={item.id} className="flex justify-between">
+                        <span className="text-gray-500">{item.name} (x{item.quantity})</span>
+                        <span className="text-gray-900">{formatPrice(item.price * item.quantity)}</span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-            <div className="mt-[12px] flex items-center justify-between text-[28px] font-bold text-[#111827]">
-              <span>Total</span>
-              <span>{formatPrice(subtotal)}</span>
+
+            {['BASE VAN SYSTEMS', 'ADVENTURE & UTILITY', 'COMFORT & TECHNOLOGY', 'EXTERIOR & SAFETY'].map((section) => (
+              <div key={section} className="flex items-center justify-between py-2 border-t border-gray-50">
+                <div className="flex items-center gap-2">
+                  <span className="text-[15px] font-bold text-[#111827] opacity-80">{section}</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="text-gray-400 opacity-60">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </div>
+                <span className="text-[15px] font-bold text-[#111827] opacity-80">$0</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Build Summary Card */}
+          <div className="bg-white rounded-3xl border border-gray-100 shadow-sm px-8 pb-4 space-y-6 !mt-8">
+            <h3 className="text-[24px] font-bold text-[#111827]">Build Summary</h3>
+            <div className="h-px bg-gray-100" />
+            
+            <div className="space-y-4">
+              <label className="text-[14px] font-medium text-gray-400">Special Instructions</label>
+              <div className="bg-gray-50 rounded-2xl p-6 text-[15px] text-gray-500 leading-relaxed">
+                I need it for a family trip during spring break
+              </div>
             </div>
+
+            <div className="pt-4 space-y-4">
+              <div className="flex justify-between items-center text-[18px]">
+                <span className="text-gray-500">Subtotal</span>
+                <span className="text-gray-900 font-medium">{formatPrice(subtotal)}</span>
+              </div>
+              <div className="flex justify-between items-center text-[18px]">
+                <span className="text-gray-500">Other Charges</span>
+                <span className="text-gray-400">-</span>
+              </div>
+              <div className="flex justify-between items-center pt-2">
+                <span className="text-[32px] font-bold text-[#111827]">Total</span>
+                <span className="text-[32px] font-bold text-[#111827]">{formatPrice(subtotal)}</span>
+              </div>
+            </div>
+
+            <button className="w-full bg-[#111827] text-white py-6 rounded-2xl text-[16px] font-bold uppercase tracking-wider hover:bg-gray-800 transition-colors shadow-xl shadow-gray-200 mb-8">
+              Connect With Dealer
+            </button>
           </div>
         </div>
       </section>
