@@ -1,130 +1,257 @@
-import React, { Suspense, useRef, useState, useEffect } from 'react';
-import { useGLTF, OrbitControls, Stage, Center, Html, Environment } from '@react-three/drei';
-import { useThree, useFrame } from '@react-three/fiber';
-import * as THREE from 'three';
+import React, {
+  Suspense,
+  useRef,
+  useState,
+  useEffect,
+  useLayoutEffect,
+} from "react";
+import {
+  useGLTF,
+  CameraControls,
+  Stage,
+  Html,
+} from "@react-three/drei";
+import { useThree } from "@react-three/fiber";
+import * as THREE from "three";
 
 interface ModelProps {
   url: string;
+  environment?: string;
 }
 
-const Model: React.FC<ModelProps> = ({ url }) => {
+const Model: React.FC<ModelProps> = ({ url, environment }) => {
   const { scene } = useGLTF(url);
+
+  useEffect(() => {
+    scene.traverse((child) => {
+      if ((child as THREE.Mesh).isMesh) {
+        if (child.name.startsWith("Plane001")) {
+          child.visible = !environment?.endsWith(".hdr");
+        }
+      }
+    });
+  }, [scene, url, environment]);
+
   return <primitive object={scene} />;
 };
 
 interface CameraControllerProps {
-  viewMode: 'exterior' | 'interior';
+  viewMode: "exterior" | "interior";
   controlsRef: React.RefObject<any>;
+  modelGroupRef: React.RefObject<THREE.Group>;
   setIsTransitioning: (val: boolean) => void;
 }
 
-const CameraController: React.FC<CameraControllerProps> = ({ viewMode, controlsRef, setIsTransitioning }) => {
+const CameraController: React.FC<CameraControllerProps> = ({
+  viewMode,
+  controlsRef,
+  modelGroupRef,
+  setIsTransitioning,
+}) => {
   const { camera } = useThree();
-  const lastViewMode = useRef<string>(viewMode);
-  const isMoving = useRef<boolean>(true);
 
-  // Trigger transition when viewMode changes
-  if (viewMode !== lastViewMode.current) {
-    lastViewMode.current = viewMode;
-    isMoving.current = true;
+  useEffect(() => {
+    if (!controlsRef.current) return;
+    if (!modelGroupRef.current) return;
+
+    const box = new THREE.Box3().setFromObject(
+      modelGroupRef.current
+    );
+
+    const center = box.getCenter(
+      new THREE.Vector3()
+    );
+
+    const size = box.getSize(
+      new THREE.Vector3()
+    );
+
+    const maxDimension = Math.max(
+      size.x,
+      size.y,
+      size.z
+    );
+
+    let targetPosition: number[];
+
+    if (viewMode === "interior") {
+      targetPosition = [
+        center.x,
+        center.y + maxDimension * 0.1,
+        center.z + maxDimension * 0.25,
+      ];
+    } else {
+      const distance = maxDimension * 1.8;
+
+      targetPosition = [
+        center.x + distance,
+        center.y + distance * 0.6,
+        center.z + distance,
+      ];
+    }
+
+    const targetFov =
+      viewMode === "interior"
+        ? 75
+        : 35;
+
     setIsTransitioning(true);
-  }
 
-  useFrame(() => {
-    if (!controlsRef.current || !isMoving.current) return;
+    const animateFov = () => {
+      if (
+        Math.abs(camera.fov - targetFov) > 0.5
+      ) {
+        camera.fov = THREE.MathUtils.lerp(
+          camera.fov,
+          targetFov,
+          0.1
+        );
 
-    const targetTarget = viewMode === 'interior' 
-      ? new THREE.Vector3(0, 0.1, -1.0) 
-      : new THREE.Vector3(0, 0, 0);
+        camera.updateProjectionMatrix();
 
-    const targetPosition = viewMode === 'interior' 
-      ? new THREE.Vector3(0, 0.6, 0.6) 
-      : new THREE.Vector3(5.5, 3.8, 5.5);
+        requestAnimationFrame(
+          animateFov
+        );
+      } else {
+        camera.fov = targetFov;
+        camera.updateProjectionMatrix();
+      }
+    };
 
-    const targetFov = viewMode === 'interior' ? 75 : 35;
+    animateFov();
 
-    // Smoothly interpolate camera position, orbit target, and FOV
-    camera.position.lerp(targetPosition, 0.035);
-    controlsRef.current.target.lerp(targetTarget, 0.035);
-    
-    if (Math.abs(camera.fov - targetFov) > 0.1) {
-      camera.fov = THREE.MathUtils.lerp(camera.fov, targetFov, 0.035);
-      camera.updateProjectionMatrix();
-    }
+    controlsRef.current
+      .setLookAt(
+        targetPosition[0],
+        targetPosition[1],
+        targetPosition[2],
 
-    controlsRef.current.update();
+        center.x,
+        center.y,
+        center.z,
 
-    // Check if transition is complete
-    const posDist = camera.position.distanceTo(targetPosition);
-    const targetDist = controlsRef.current.target.distanceTo(targetTarget);
-    const fovDist = Math.abs(camera.fov - targetFov);
-
-    if (posDist < 0.01 && targetDist < 0.01 && fovDist < 0.2) {
-      // Snap to final values, enable controls, and stop rendering updates
-      camera.position.copy(targetPosition);
-      controlsRef.current.target.copy(targetTarget);
-      camera.fov = targetFov;
-      camera.updateProjectionMatrix();
-      controlsRef.current.update();
-      isMoving.current = false;
-      setIsTransitioning(false);
-    }
-  });
+        true
+      )
+      .then(() => {
+        setIsTransitioning(false);
+      });
+  }, [
+    viewMode,
+    camera,
+    controlsRef,
+    modelGroupRef,
+  ]);
 
   return null;
 };
 
 interface ModelViewerProps {
   modelUrls: string[];
-  viewMode: 'exterior' | 'interior';
+  viewMode: "exterior" | "interior";
   environment?: string;
   onLoaded: () => void;
 }
 
-export const ModelViewer: React.FC<ModelViewerProps> = ({ modelUrls, viewMode, environment = 'city', onLoaded }) => {
-  const controlsRef = useRef<any>(null);
-  const [isTransitioning, setIsTransitioning] = useState<boolean>(true);
+export const ModelViewer: React.FC<
+  ModelViewerProps
+> = ({
+  modelUrls,
+  viewMode,
+  environment = "city",
+  onLoaded,
+}) => {
+  const controlsRef = useRef<any>(
+    null
+  );
 
-  // Trigger onLoaded after the component renders and completes mounting
+  const modelGroupRef =
+    useRef<THREE.Group>(null);
+
+  const [
+    isTransitioning,
+    setIsTransitioning,
+  ] = useState(true);
+
   useEffect(() => {
     onLoaded();
   }, [onLoaded]);
 
-  if (modelUrls.length === 0) return null;
+  if (modelUrls.length === 0)
+    return null;
+
+  const stageEnvironment =
+    environment.endsWith(".hdr")
+      ? {
+          files: environment,
+          background: true,
+          ground: {
+            radius: 100,
+            height: 5,
+            scale: 100,
+          },
+        }
+      : {
+          preset: environment as any,
+          background: false,
+        };
+
+    const isCenterDisable = environment?.endsWith('.hdr')?true : false
 
   return (
-    <Suspense fallback={
-      <Html center pointerEvents="none">
-        <div className="w-[120px] h-[120px] flex items-center justify-center bg-transparent">
-          <img src="/assets/loader.gif" alt="Loading..." className="w-full h-full object-contain" />
-        </div>
-      </Html>
-    }>
-      <Stage environment={null} intensity={0.6} contactShadow={true} shadowBias={-0.0015} adjustCamera={false}>
-        <Center>
+    <Suspense
+      fallback={
+        <Html center>
+          <div className="w-[120px] h-[120px] flex items-center justify-center">
+            <img
+              src="/assets/loader.gif"
+              alt="loading"
+              className="w-full h-full"
+            />
+          </div>
+        </Html>
+      }
+    >
+      <Stage
+        adjustCamera={false}
+        center={{ disable: isCenterDisable }}
+        environment={
+          stageEnvironment as any
+        }
+        intensity={0.6}
+        contactShadow={environment?.endsWith('.hdr') ? false : true}
+        shadowBias={-0.0015}
+      >
+        <group ref={modelGroupRef}>
           {modelUrls.map((url) => (
-            <Model key={url} url={url} />
+            <Model
+              key={url}
+              url={url}
+              environment={environment}
+            />
           ))}
-        </Center>
+        </group>
       </Stage>
-      {environment && (
-        environment.endsWith('.hdr') ? (
-          <Environment files={environment} />
-        ) : (
-          <Environment preset={environment as any} />
-        )
-      )}
-      <OrbitControls 
-        ref={controlsRef} 
-        makeDefault 
-        enabled={!isTransitioning} // temporarily disable user input during transitions
-        minPolarAngle={0} 
-        maxPolarAngle={Math.PI / 1.75} 
+
+      <CameraControls
+        ref={controlsRef}
+        makeDefault
+        enabled={!isTransitioning}
+        minPolarAngle={0}
+        maxPolarAngle={
+          Math.PI / 2.25
+        }
+        smoothTime={0.5}
       />
-      <CameraController 
-        viewMode={viewMode} 
-        controlsRef={controlsRef} 
-        setIsTransitioning={setIsTransitioning} 
+
+      <CameraController
+        viewMode={viewMode}
+        controlsRef={controlsRef}
+        modelGroupRef={
+          modelGroupRef
+        }
+        setIsTransitioning={
+          setIsTransitioning
+        }
       />
     </Suspense>
   );
