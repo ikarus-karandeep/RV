@@ -171,7 +171,7 @@ export const ConfiguratorPage: React.FC = () => {
     0,
   );
   const totalPrice =
-    120 + (selectedSizeOption?.price || 0) + equipmentTotal;
+    120000 + (selectedSizeOption?.price || 0) + equipmentTotal;
 
   const handleQuantityChange = (itemId: string, quantity: number) => {
     setEquipmentQuantities((prev) => ({ ...prev, [itemId]: quantity }));

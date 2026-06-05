@@ -41,7 +41,7 @@ export const BuildSummaryModal: React.FC<BuildSummaryModalProps> = ({
     0,
   );
   const subtotal =
-    120 + (sizeOption?.price || 0) + equipmentTotal;
+    120000 + (sizeOption?.price || 0) + equipmentTotal;
 
   // Group items by category
   const itemsByCategory = (equipmentItems || []).reduce((acc, item) => {
@@ -96,7 +96,7 @@ export const BuildSummaryModal: React.FC<BuildSummaryModalProps> = ({
                 {trailerType?.title || 'SELECT A VAN'}
               </p>
               <p className="text-[24px] font-bold text-[#111827]">
-                {formatPrice(trailerType?.basePrice || 120)}
+                {formatPrice(trailerType?.basePrice || 120000)}
               </p>
             </div>
           </div>
@@ -128,7 +128,7 @@ export const BuildSummaryModal: React.FC<BuildSummaryModalProps> = ({
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
                     <span className="text-[15px] font-bold text-[#111827]">VAN SPECIFICATIONS</span>
-                    <span className="text-[15px] font-bold text-[#111827]">{formatPrice(trailerType?.basePrice || 120)}</span>
+                    <span className="text-[15px] font-bold text-[#111827]">{formatPrice(trailerType?.basePrice || 120000)}</span>
                   </div>
                   <div className="space-y-3 text-[14px]">
                     <div className="flex justify-between">

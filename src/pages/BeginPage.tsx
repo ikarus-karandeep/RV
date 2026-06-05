@@ -30,7 +30,7 @@ export const BeginPage: React.FC = () => {
       description: 'Standard conversion package providing all you need for your upcoming adventures.',
       image: '/assets/CamperVan/image 64.png',
       brandImage: '/assets/CamperVan/Frame 1984078809.png',
-      price: 'From*$ 120',
+      price: 'From*$ 80,000',
       models: ['T5.1 (2010-15)', 'T6 (2015-18)', 'T6.1 (2018-)'],
     },
     {
@@ -39,7 +39,7 @@ export const BeginPage: React.FC = () => {
       description: 'When a slick sports bodykit meets the premium standard of a Spartan luxury interior.',
       image: '/assets/CamperVan/image 63.png',
       brandImage: '/assets/CamperVan/Frame 1984078809.png',
-      price: 'From*$ 120',
+      price: 'From*$ 100,000',
       models: ['T5.1 (2010-15)', 'T6 (2015-18)', 'T6.1 (2018-)'],
     },
     {
@@ -48,7 +48,7 @@ export const BeginPage: React.FC = () => {
       description: 'An all terrain swamper fit for anything your expeditions & adventurers might throw at you.',
       image: '/assets/CamperVan/image 62.png',
       brandImage: '/assets/CamperVan/Frame 1984078809.png',
-      price: 'From*$ 120',
+      price: 'From*$ 120,000',
       models: ['T5.1 (2010-15)', 'T6 (2015-18)', 'T6.1 (2018-)'],
     },
   ];
